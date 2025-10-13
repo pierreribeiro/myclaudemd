@@ -1,0 +1,202 @@
+name: Version Backup
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'claude.md'
+
+jobs:
+  backup:
+    name: Create Versioned Backup
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+      
+      - name: Extract Version Information
+        id: version
+        run: |
+          version=$(grep -oP 'version:\s*\K\d+\.\d+\.\d+' claude.md | head -1)
+          
+          if [[ -z "$version" ]]; then
+            echo "❌ ERROR: Could not extract version from claude.md"
+            exit 1
+          fi
+          
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "📌 Detected version: v$version"
+          
+          # Extract last_updated date if available
+          last_updated=$(grep -oP 'last_updated:\s*\K[\d-]+' claude.md | head -1)
+          if [[ -n "$last_updated" ]]; then
+            echo "last_updated=$last_updated" >> $GITHUB_OUTPUT
+            echo "📅 Last updated: $last_updated"
+          fi
+      
+      - name: Create Backup Directory
+        run: |
+          mkdir -p versions
+          echo "📁 Backup directory ready"
+      
+      - name: Generate Backup Filename
+        id: filename
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          timestamp=$(date +%Y%m%d-%H%M%S)
+          filename="claude-v${version}-backup-${timestamp}.md"
+          
+          echo "filename=$filename" >> $GITHUB_OUTPUT
+          echo "📄 Backup filename: $filename"
+      
+      - name: Create Versioned Backup
+        run: |
+          filename="${{ steps.filename.outputs.filename }}"
+          
+          # Copy file with version header
+          cat > "versions/$filename" << 'HEADER'
+# ============================================
+# BACKUP OF claude.md
+# ============================================
+# Version: v${{ steps.version.outputs.version }}
+# Backup Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+# Commit: ${{ github.sha }}
+# Triggered by: ${{ github.actor }}
+# ============================================
+
+HEADER
+          
+          # Append original content
+          cat claude.md >> "versions/$filename"
+          
+          echo "✅ Backup created: versions/$filename"
+      
+      - name: Create Latest Symlink
+        run: |
+          cd versions
+          ln -sf "${{ steps.filename.outputs.filename }}" claude-latest.md
+          echo "✅ Symlink updated: claude-latest.md -> ${{ steps.filename.outputs.filename }}"
+      
+      - name: Generate Backup Metadata
+        run: |
+          cat > versions/backup-metadata.json << EOF
+          {
+            "version": "${{ steps.version.outputs.version }}",
+            "backup_date": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "commit_sha": "${{ github.sha }}",
+            "commit_message": $(echo '${{ github.event.head_commit.message }}' | jq -Rs .),
+            "triggered_by": "${{ github.actor }}",
+            "backup_file": "${{ steps.filename.outputs.filename }}"
+          }
+          EOF
+          
+          echo "✅ Metadata file created"
+          cat versions/backup-metadata.json
+      
+      - name: Check for Existing Backup
+        id: check
+        run: |
+          filename="${{ steps.filename.outputs.filename }}"
+          
+          if git ls-files --error-unmatch "versions/$filename" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "⚠️  Backup file already exists (will be updated)"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "✅ New backup file"
+          fi
+      
+      - name: Commit Backup
+        run: |
+          git add versions/
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️  No changes to commit"
+          else
+            git commit -m "backup: claude.md v${{ steps.version.outputs.version }}
+
+            Automated backup created by GitHub Actions
+            - Version: v${{ steps.version.outputs.version }}
+            - Backup: ${{ steps.filename.outputs.filename }}
+            - Commit: ${{ github.sha }}
+            - Triggered by: ${{ github.actor }}"
+            
+            git push
+            echo "✅ Backup committed and pushed"
+          fi
+      
+      - name: Create GitHub Release Tag
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          tag="v${version}"
+          
+          # Check if tag already exists
+          if git rev-parse "$tag" >/dev/null 2>&1; then
+            echo "ℹ️  Tag $tag already exists, skipping release"
+          else
+            # Create annotated tag
+            git tag -a "$tag" -m "claude.md version $version
+
+            Automated backup and versioning
+            - Backup file: ${{ steps.filename.outputs.filename }}
+            - Backup date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+            "
+            
+            git push origin "$tag"
+            echo "✅ Release tag created: $tag"
+          fi
+      
+      - name: Cleanup Old Backups
+        run: |
+          cd versions
+          
+          # Keep last 10 backups per version, remove older ones
+          backup_count=$(ls -1 claude-v*.md 2>/dev/null | wc -l)
+          
+          if [ $backup_count -gt 20 ]; then
+            echo "🧹 Cleaning up old backups (keeping 20 most recent)..."
+            ls -1t claude-v*.md | tail -n +21 | xargs rm -f
+            
+            git add .
+            if ! git diff --staged --quiet; then
+              git commit -m "chore: cleanup old version backups"
+              git push
+              echo "✅ Old backups cleaned up"
+            fi
+          else
+            echo "✅ Backup count OK: $backup_count files"
+          fi
+      
+      - name: Generate Summary Report
+        if: always()
+        run: |
+          cat << EOF
+          📊 BACKUP SUMMARY
+          ==================
+          ✅ Version: v${{ steps.version.outputs.version }}
+          ✅ Backup File: ${{ steps.filename.outputs.filename }}
+          ✅ Backup Location: versions/
+          ✅ Latest Symlink: claude-latest.md
+          ✅ Metadata: backup-metadata.json
+          
+          📁 Repository: ${{ github.repository }}
+          🔗 Commit: ${{ github.sha }}
+          👤 Triggered by: ${{ github.actor }}
+          📅 Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          🎯 Next Steps:
+          - Backup is available in versions/ directory
+          - Can be restored anytime using: cp versions/${{ steps.filename.outputs.filename }} claude.md
+          - Check CHANGELOG.md for version history
+          EOF

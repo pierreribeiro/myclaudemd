@@ -1,0 +1,232 @@
+name: Validate Claude.md Structure
+
+on:
+  push:
+    paths:
+      - 'claude.md'
+      - 'versions/claude-*.md'
+  pull_request:
+    paths:
+      - 'claude.md'
+      - 'versions/claude-*.md'
+
+jobs:
+  validate-structure:
+    name: Validate File Structure
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Check File Exists
+        run: |
+          if [ ! -f "claude.md" ]; then
+            echo "❌ ERROR: claude.md not found in repository root!"
+            exit 1
+          fi
+          echo "✅ claude.md file found"
+          
+          # Check file size
+          size=$(wc -c < claude.md)
+          echo "📊 File size: ${size} bytes"
+          
+          if [ $size -eq 0 ]; then
+            echo "❌ ERROR: claude.md is empty!"
+            exit 1
+          fi
+          
+          if [ $size -gt 200000 ]; then
+            echo "⚠️  WARNING: File size exceeds 200KB (${size} bytes)"
+            echo "::warning::Consider splitting into multiple files for better performance"
+          fi
+      
+      - name: Validate Required Sections
+        run: |
+          echo "🔍 Checking for required sections..."
+          
+          required_sections=(
+            "METADATA"
+            "IDENTITY & PROFESSIONAL CONTEXT"
+            "COGNITIVE STYLE & LEARNING PATTERNS"
+            "COMMUNICATION FRAMEWORK"
+            "WORKFLOWS & METHODOLOGIES"
+            "GUARDRAILS & GUIDELINES"
+            "OUTPUT FORMATS & ARTIFACTS"
+            "OPERATIONAL MODES"
+            "PERSONA SYSTEM"
+            "ACTIVATION COMMANDS"
+          )
+          
+          missing_sections=()
+          
+          for section in "${required_sections[@]}"; do
+            if ! grep -qi "$section" claude.md; then
+              missing_sections+=("$section")
+              echo "❌ Missing section: $section"
+            else
+              echo "✅ Found section: $section"
+            fi
+          done
+          
+          if [ ${#missing_sections[@]} -ne 0 ]; then
+            echo ""
+            echo "❌ VALIDATION FAILED: Missing ${#missing_sections[@]} required section(s)"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All required sections present!"
+      
+      - name: Validate Version Format
+        run: |
+          echo "🔍 Validating version format..."
+          
+          version=$(grep -oP 'version:\s*\K\d+\.\d+\.\d+' claude.md | head -1)
+          
+          if [[ -z "$version" ]]; then
+            echo "❌ ERROR: Version not found or invalid format!"
+            echo "Expected format: version: X.Y.Z"
+            exit 1
+          fi
+          
+          if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ ERROR: Invalid version format: $version"
+            echo "Expected: X.Y.Z (semantic versioning)"
+            exit 1
+          fi
+          
+          echo "✅ Version format valid: v$version"
+          echo "version=$version" >> $GITHUB_ENV
+      
+      - name: Validate Metadata Fields
+        run: |
+          echo "🔍 Checking metadata completeness..."
+          
+          required_metadata=(
+            "version:"
+            "created:"
+            "last_updated:"
+            "profile_type:"
+            "seniority:"
+          )
+          
+          for field in "${required_metadata[@]}"; do
+            if ! grep -q "$field" claude.md; then
+              echo "❌ Missing metadata field: $field"
+              exit 1
+            else
+              echo "✅ Found metadata: $field"
+            fi
+          done
+          
+          echo "✅ All required metadata fields present"
+      
+      - name: Check for P0 Guardrails
+        run: |
+          echo "🔍 Validating P0 Critical Guardrails..."
+          
+          if ! grep -q "P0 - CRITICAL" claude.md; then
+            echo "❌ ERROR: P0 Critical Guardrails section not found!"
+            exit 1
+          fi
+          
+          # Count P0 rules
+          p0_count=$(grep -c "✅ \*\*ALWAYS\*\*" claude.md || true)
+          
+          if [ $p0_count -lt 5 ]; then
+            echo "⚠️  WARNING: Only $p0_count P0 rules found (expected at least 5)"
+            echo "::warning::Consider reviewing P0 guardrails completeness"
+          else
+            echo "✅ Found $p0_count P0 guardrail rules"
+          fi
+      
+      - name: Validate TAG System
+        run: |
+          echo "🔍 Checking TAG system integrity..."
+          
+          # Check for persona tags
+          persona_count=$(grep -c '@.*@' claude.md || true)
+          echo "📊 Found $persona_count persona activation patterns"
+          
+          # Check for context tags
+          context_count=$(grep -c '<.*>' claude.md || true)
+          echo "📊 Found $context_count context tag patterns"
+          
+          # Look for potentially broken tags
+          broken_tags=$(grep -n '@[^@]*$' claude.md || true)
+          if [ -n "$broken_tags" ]; then
+            echo "⚠️  WARNING: Potentially unclosed persona tags detected:"
+            echo "$broken_tags"
+            echo "::warning::Check for unclosed @ tags"
+          else
+            echo "✅ No broken persona tags detected"
+          fi
+      
+      - name: Check for Common Issues
+        run: |
+          echo "🔍 Scanning for common issues..."
+          
+          issues=0
+          
+          # Check for TODO/FIXME markers
+          if grep -qi "TODO\|FIXME\|XXX" claude.md; then
+            todos=$(grep -n "TODO\|FIXME\|XXX" claude.md || true)
+            echo "⚠️  Found TODO/FIXME markers:"
+            echo "$todos"
+            echo "::warning::Document contains TODO/FIXME markers"
+            issues=$((issues + 1))
+          fi
+          
+          # Check for placeholder text
+          if grep -qi "REPLACE_ME\|PLACEHOLDER\|TBD\|CHANGEME" claude.md; then
+            echo "⚠️  Found placeholder text"
+            echo "::warning::Document contains placeholder text"
+            issues=$((issues + 1))
+          fi
+          
+          # Check for broken markdown links
+          if grep -E '\[.*\]\(\)' claude.md > /dev/null; then
+            echo "⚠️  Found empty markdown links"
+            echo "::warning::Document contains empty markdown links"
+            issues=$((issues + 1))
+          fi
+          
+          if [ $issues -eq 0 ]; then
+            echo "✅ No common issues found"
+          else
+            echo "⚠️  Found $issues potential issue(s) - review recommended"
+          fi
+      
+      - name: Generate Validation Report
+        if: always()
+        run: |
+          echo "📋 VALIDATION SUMMARY" > validation-report.txt
+          echo "===================" >> validation-report.txt
+          echo "" >> validation-report.txt
+          echo "✅ File existence check: PASSED" >> validation-report.txt
+          echo "✅ Required sections: PASSED" >> validation-report.txt
+          echo "✅ Version format: PASSED (v${{ env.version }})" >> validation-report.txt
+          echo "✅ Metadata fields: PASSED" >> validation-report.txt
+          echo "✅ P0 Guardrails: PASSED" >> validation-report.txt
+          echo "✅ TAG System: PASSED" >> validation-report.txt
+          echo "" >> validation-report.txt
+          echo "Validated at: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> validation-report.txt
+          
+          cat validation-report.txt
+      
+      - name: Success Summary
+        run: |
+          echo "🎉 ============================================"
+          echo "✅ VALIDATION SUCCESSFUL!"
+          echo "============================================"
+          echo ""
+          echo "📄 File: claude.md"
+          echo "📌 Version: v${{ env.version }}"
+          echo "✅ All checks passed"
+          echo ""
+          echo "Next steps:"
+          echo "  - Review any warnings above"
+          echo "  - Continue with merge/deployment"

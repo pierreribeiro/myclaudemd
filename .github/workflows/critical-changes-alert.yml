@@ -1,0 +1,245 @@
+name: Critical Changes Alert
+
+on:
+  pull_request:
+    paths:
+      - 'claude.md'
+
+jobs:
+  detect-critical-changes:
+    name: Detect Critical Changes
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout PR Branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Generate Diff
+        id: diff
+        run: |
+          git diff HEAD^ HEAD -- claude.md > changes.diff
+          
+          if [ ! -s changes.diff ]; then
+            echo "ℹ️  No changes detected in claude.md"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "✅ Changes detected, analyzing..."
+          
+          # Save diff for later steps
+          cat changes.diff
+      
+      - name: Analyze Critical Sections
+        if: steps.diff.outputs.has_changes == 'true'
+        id: critical
+        run: |
+          critical_changes=0
+          changes_summary=""
+          
+          # Check P0 Guardrails
+          if grep -q "P0 - CRITICAL" changes.diff; then
+            echo "🚨 CRITICAL: P0 Guardrails section modified!"
+            echo "::error::P0 Guardrails have been modified - requires careful review"
+            changes_summary="${changes_summary}🚨 **CRITICAL**: P0 Guardrails modified\n"
+            critical_changes=$((critical_changes + 1))
+          fi
+          
+          # Check version changes
+          if grep -q "version:" changes.diff; then
+            version_old=$(git show HEAD^:claude.md | grep -oP 'version:\s*\K\d+\.\d+\.\d+' | head -1)
+            version_new=$(git show HEAD:claude.md | grep -oP 'version:\s*\K\d+\.\d+\.\d+' | head -1)
+            
+            if [[ "$version_old" != "$version_new" ]]; then
+              echo "📌 Version updated: v$version_old → v$version_new"
+              changes_summary="${changes_summary}📌 Version: v$version_old → v$version_new\n"
+            fi
+          fi
+          
+          # Check Persona System
+          if grep -q "PERSONA SYSTEM" changes.diff; then
+            echo "🎭 Persona System modified"
+            changes_summary="${changes_summary}🎭 Persona System updated\n"
+          fi
+          
+          # Check TAG System
+          if grep -q "ACTIVATION COMMANDS\|TAG SYSTEM" changes.diff; then
+            echo "🏷️  TAG System modified"
+            changes_summary="${changes_summary}🏷️ TAG System updated\n"
+          fi
+          
+          # Check Communication Framework
+          if grep -q "COMMUNICATION FRAMEWORK" changes.diff; then
+            echo "💬 Communication Framework modified"
+            changes_summary="${changes_summary}💬 Communication Framework updated\n"
+          fi
+          
+          # Check Workflows
+          if grep -q "WORKFLOWS & METHODOLOGIES" changes.diff; then
+            echo "⚙️  Workflows modified"
+            changes_summary="${changes_summary}⚙️ Workflows updated\n"
+          fi
+          
+          # Check Technology Stack
+          if grep -q "Technology Stack\|Tier 1\|Tier 2" changes.diff; then
+            echo "🔧 Technology Stack modified"
+            changes_summary="${changes_summary}🔧 Technology Stack updated\n"
+          fi
+          
+          echo "critical_count=$critical_changes" >> $GITHUB_OUTPUT
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$changes_summary" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Check for Removed Content
+        if: steps.diff.outputs.has_changes == 'true'
+        id: removals
+        run: |
+          removed_lines=$(grep "^-" changes.diff | grep -v "^---" | wc -l)
+          added_lines=$(grep "^+" changes.diff | grep -v "^+++" | wc -l)
+          
+          echo "📊 Lines removed: $removed_lines"
+          echo "📊 Lines added: $added_lines"
+          
+          echo "removed=$removed_lines" >> $GITHUB_OUTPUT
+          echo "added=$added_lines" >> $GITHUB_OUTPUT
+          
+          if [ $removed_lines -gt 50 ]; then
+            echo "⚠️  WARNING: Significant content removal detected ($removed_lines lines)"
+            echo "::warning::Large number of lines removed - verify nothing critical was deleted"
+          fi
+      
+      - name: Validate New Content
+        if: steps.diff.outputs.has_changes == 'true'
+        run: |
+          # Check for potentially problematic additions
+          if grep "^+" changes.diff | grep -qi "TODO\|FIXME\|XXX"; then
+            echo "⚠️  WARNING: Added TODO/FIXME markers"
+            echo "::warning::New TODO/FIXME markers added"
+          fi
+          
+          if grep "^+" changes.diff | grep -qi "PLACEHOLDER\|REPLACE_ME\|TBD"; then
+            echo "⚠️  WARNING: Added placeholder text"
+            echo "::warning::New placeholder text added"
+          fi
+          
+          echo "✅ Content validation complete"
+      
+      - name: Calculate Change Impact
+        if: steps.diff.outputs.has_changes == 'true'
+        id: impact
+        run: |
+          critical_count=${{ steps.critical.outputs.critical_count }}
+          removed=${{ steps.removals.outputs.removed }}
+          added=${{ steps.removals.outputs.added }}
+          
+          # Calculate impact score
+          impact_score=0
+          
+          if [ $critical_count -gt 0 ]; then
+            impact_score=$((impact_score + 10))
+          fi
+          
+          if [ $removed -gt 100 ]; then
+            impact_score=$((impact_score + 5))
+          elif [ $removed -gt 50 ]; then
+            impact_score=$((impact_score + 3))
+          fi
+          
+          if [ $added -gt 200 ]; then
+            impact_score=$((impact_score + 3))
+          fi
+          
+          # Determine impact level
+          if [ $impact_score -ge 10 ]; then
+            impact_level="🚨 HIGH"
+          elif [ $impact_score -ge 5 ]; then
+            impact_level="⚠️  MEDIUM"
+          else
+            impact_level="✅ LOW"
+          fi
+          
+          echo "impact_level=$impact_level" >> $GITHUB_OUTPUT
+          echo "impact_score=$impact_score" >> $GITHUB_OUTPUT
+          
+          echo "📊 Change Impact: $impact_level (score: $impact_score)"
+      
+      - name: Comment on PR
+        if: steps.diff.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = `${{ steps.critical.outputs.summary }}`;
+            const impactLevel = `${{ steps.impact.outputs.impact_level }}`;
+            const removed = `${{ steps.removals.outputs.removed }}`;
+            const added = `${{ steps.removals.outputs.added }}`;
+            const criticalCount = `${{ steps.critical.outputs.critical_count }}`;
+            
+            let message = `## 📋 Claude.md Change Analysis\n\n`;
+            
+            message += `### Impact Level: ${impactLevel}\n\n`;
+            
+            if (summary && summary.trim() !== '') {
+              message += `### 🎯 Changes Detected\n\n${summary}\n`;
+            }
+            
+            message += `### 📊 Statistics\n\n`;
+            message += `- **Lines Added**: ${added}\n`;
+            message += `- **Lines Removed**: ${removed}\n`;
+            message += `- **Critical Sections Modified**: ${criticalCount}\n\n`;
+            
+            if (parseInt(criticalCount) > 0) {
+              message += `### ⚠️  Review Requirements\n\n`;
+              message += `This PR modifies **critical sections** of claude.md:\n\n`;
+              message += `- [ ] P0 Guardrails reviewed\n`;
+              message += `- [ ] Changes tested with Claude\n`;
+              message += `- [ ] Version number updated\n`;
+              message += `- [ ] CHANGELOG.md will be auto-updated\n`;
+              message += `- [ ] Backup will be auto-created\n\n`;
+              message += `🔍 **Action Required**: Careful review needed before merge!\n`;
+            } else {
+              message += `### ✅ Review Checklist\n\n`;
+              message += `- [ ] Changes reviewed\n`;
+              message += `- [ ] Version updated (if needed)\n`;
+              message += `- [ ] Ready to merge\n`;
+            }
+            
+            message += `\n---\n`;
+            message += `*Automated analysis by Critical Changes Alert workflow*\n`;
+            message += `*Timestamp: ${new Date().toISOString()}*\n`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
+      
+      - name: Generate Alert Summary
+        if: always()
+        run: |
+          cat << EOF
+          🔔 CRITICAL CHANGES ALERT - SUMMARY
+          ====================================
+          
+          Impact Level: ${{ steps.impact.outputs.impact_level }}
+          Critical Count: ${{ steps.critical.outputs.critical_count }}
+          Lines Added: ${{ steps.removals.outputs.added }}
+          Lines Removed: ${{ steps.removals.outputs.removed }}
+          
+          Changes Summary:
+          ${{ steps.critical.outputs.summary }}
+          
+          PR: #${{ github.event.pull_request.number }}
+          Author: ${{ github.event.pull_request.user.login }}
+          Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          Next Actions:
+          - Review PR carefully
+          - Verify critical sections
+          - Test changes with Claude
+          - Approve when ready
+          EOF

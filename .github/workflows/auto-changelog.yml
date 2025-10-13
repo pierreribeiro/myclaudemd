@@ -1,0 +1,196 @@
+name: Auto Changelog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'claude.md'
+      - 'docs/**'
+      - 'versions/**'
+
+jobs:
+  generate-changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+      
+      - name: Extract Current Version
+        id: version
+        run: |
+          version=$(grep -oP 'version:\s*\K\d+\.\d+\.\d+' claude.md | head -1)
+          
+          if [[ -z "$version" ]]; then
+            echo "⚠️  WARNING: Could not extract version, using 'unreleased'"
+            version="unreleased"
+          fi
+          
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "📌 Current version: v$version"
+      
+      - name: Get Previous Version Tag
+        id: previous
+        run: |
+          # Get the previous version tag
+          previous_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [[ -z "$previous_tag" ]]; then
+            echo "ℹ️  No previous tag found, this is the first release"
+            echo "tag=HEAD" >> $GITHUB_OUTPUT
+            echo "range=HEAD" >> $GITHUB_OUTPUT
+          else
+            echo "📌 Previous version: $previous_tag"
+            echo "tag=$previous_tag" >> $GITHUB_OUTPUT
+            echo "range=${previous_tag}..HEAD" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate Changelog Content
+        id: changelog
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          range="${{ steps.previous.outputs.range }}"
+          
+          cat > CHANGELOG_NEW.md << 'HEADER'
+          # Changelog
+          
+          All notable changes to the claude.md preference file will be documented in this file.
+          
+          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+          
+          HEADER
+          
+          # Add current version section
+          echo "" >> CHANGELOG_NEW.md
+          echo "## [${version}] - $(date +%Y-%m-%d)" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          # Parse commits by type
+          echo "### 🎯 Added" >> CHANGELOG_NEW.md
+          git log $range --pretty=format:"%s" --grep="^feat" | sed 's/^feat[:(]/- /' | sed 's/)://' >> CHANGELOG_NEW.md || echo "- No new features" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          echo "### 🔧 Changed" >> CHANGELOG_NEW.md
+          git log $range --pretty=format:"%s" --grep="^refactor\|^perf\|^style" | sed 's/^refactor[:(]/- /' | sed 's/^perf[:(]/- /' | sed 's/^style[:(]/- /' | sed 's/)://' >> CHANGELOG_NEW.md || echo "- No changes" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          echo "### 🐛 Fixed" >> CHANGELOG_NEW.md
+          git log $range --pretty=format:"%s" --grep="^fix" | sed 's/^fix[:(]/- /' | sed 's/)://' >> CHANGELOG_NEW.md || echo "- No fixes" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          echo "### 📚 Documentation" >> CHANGELOG_NEW.md
+          git log $range --pretty=format:"%s" --grep="^docs" | sed 's/^docs[:(]/- /' | sed 's/)://' >> CHANGELOG_NEW.md || echo "- No documentation updates" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          echo "### 🔄 Backup & Maintenance" >> CHANGELOG_NEW.md
+          git log $range --pretty=format:"%s" --grep="^backup\|^chore" | sed 's/^backup[:(]/- /' | sed 's/^chore[:(]/- /' | sed 's/)://' >> CHANGELOG_NEW.md || echo "- No maintenance tasks" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          # Append existing changelog if it exists
+          if [ -f CHANGELOG.md ]; then
+            # Skip the header of the old changelog
+            tail -n +8 CHANGELOG.md >> CHANGELOG_NEW.md 2>/dev/null || true
+          fi
+          
+          # Replace old changelog
+          mv CHANGELOG_NEW.md CHANGELOG.md
+          
+          echo "✅ Changelog generated"
+      
+      - name: Generate Quick Reference
+        run: |
+          version="${{ steps.version.outputs.version }}"
+          
+          cat > docs/QUICK_REFERENCE.md << 'EOF'
+          # Claude.md Quick Reference
+          
+          > Auto-generated quick reference for Pierre's preference file
+          
+          ## 📊 Current Version
+          
+          **Version:** v${{ steps.version.outputs.version }}
+          **Last Updated:** $(date +%Y-%m-%d)
+          
+          ## 🎭 Personas Available
+          
+          EOF
+          
+          # Extract personas from claude.md
+          echo "| Persona | Activation | Purpose |" >> docs/QUICK_REFERENCE.md
+          echo "|---------|------------|---------|" >> docs/QUICK_REFERENCE.md
+          
+          grep -A 2 "^#### 🔥\|^#### 🔍\|^#### 🗄️\|^#### 📚\|^#### 🏗️\|^#### 👁️\|^#### 📊\|^#### 🎨\|^#### ⚡" claude.md | \
+          grep -E "^\*\*Context\*\*:|^- \*\*" | \
+          paste - - | \
+          sed 's/^#### /| /' | \
+          sed 's/ \*\*Context\*\*: / | /' | \
+          sed 's/$/  |/' >> docs/QUICK_REFERENCE.md || true
+          
+          echo "" >> docs/QUICK_REFERENCE.md
+          echo "## 🏷️ TAG System" >> docs/QUICK_REFERENCE.md
+          echo "" >> docs/QUICK_REFERENCE.md
+          echo "| Category | Pattern | Example |" >> docs/QUICK_REFERENCE.md
+          echo "|----------|---------|---------|" >> docs/QUICK_REFERENCE.md
+          echo "| Personas | \`@...@\` | \`@Emergency mode@\` |" >> docs/QUICK_REFERENCE.md
+          echo "| Contexts | \`<...>\` | \`<This is production>\` |" >> docs/QUICK_REFERENCE.md
+          echo "| Modes | \`[...]\` | \`[Discovery mode]\` |" >> docs/QUICK_REFERENCE.md
+          echo "| Commands | \`{...}\` | \`{Visual please}\` |" >> docs/QUICK_REFERENCE.md
+          echo "| Safeguards | \`!...!\` | \`!no prd!\` |" >> docs/QUICK_REFERENCE.md
+          
+          echo "✅ Quick reference generated"
+      
+      - name: Check for Changes
+        id: check
+        run: |
+          git add CHANGELOG.md docs/QUICK_REFERENCE.md
+          
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No changes to commit"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "✅ Changes detected"
+          fi
+      
+      - name: Commit Changes
+        if: steps.check.outputs.has_changes == 'true'
+        run: |
+          git commit -m "docs: auto-generate changelog and quick reference for v${{ steps.version.outputs.version }}
+
+          Automated documentation update by GitHub Actions
+          - Updated CHANGELOG.md with recent commits
+          - Generated quick reference guide
+          - Version: v${{ steps.version.outputs.version }}
+          - Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          "
+          
+          git push
+          echo "✅ Documentation committed and pushed"
+      
+      - name: Generate Summary
+        if: always()
+        run: |
+          cat << EOF
+          📊 CHANGELOG GENERATION SUMMARY
+          ================================
+          ✅ Version: v${{ steps.version.outputs.version }}
+          ✅ Changelog: CHANGELOG.md
+          ✅ Quick Reference: docs/QUICK_REFERENCE.md
+          
+          📝 Changes committed: ${{ steps.check.outputs.has_changes }}
+          📅 Generated at: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          📖 View changelog at: ${{ github.repository }}/blob/main/CHANGELOG.md
+          🔗 View quick reference at: ${{ github.repository }}/blob/main/docs/QUICK_REFERENCE.md
+          EOF
