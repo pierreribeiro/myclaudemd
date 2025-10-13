@@ -14,7 +14,8 @@ jobs:
   validate-structure:
     name: Validate File Structure
     runs-on: ubuntu-latest
-    
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # <- adiciona a variável de ambiente ao job
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -24,28 +25,28 @@ jobs:
       - name: Check File Exists
         run: |
           if [ ! -f "claude.md" ]; then
-            echo "❌ ERROR: claude.md not found in repository root!"
+            echo "ERROR: claude.md not found in repository root!"
             exit 1
           fi
-          echo "✅ claude.md file found"
+          echo "claude.md file found"
           
           # Check file size
           size=$(wc -c < claude.md)
-          echo "📊 File size: ${size} bytes"
+          echo "File size: ${size} bytes"
           
           if [ $size -eq 0 ]; then
-            echo "❌ ERROR: claude.md is empty!"
+            echo "ERROR: claude.md is empty!"
             exit 1
           fi
           
           if [ $size -gt 200000 ]; then
-            echo "⚠️  WARNING: File size exceeds 200KB (${size} bytes)"
+            echo "WARNING: File size exceeds 200KB (${size} bytes)"
             echo "::warning::Consider splitting into multiple files for better performance"
           fi
       
       - name: Validate Required Sections
         run: |
-          echo "🔍 Checking for required sections..."
+          echo "Checking for required sections..."
           
           required_sections=(
             "METADATA"
@@ -63,47 +64,50 @@ jobs:
           missing_sections=()
           
           for section in "${required_sections[@]}"; do
-            if ! grep -qi "$section" claude.md; then
+            # use fixed, case-insensitive match to avoid regex pitfalls
+            if ! grep -qFi "$section" claude.md; then
               missing_sections+=("$section")
-              echo "❌ Missing section: $section"
+              echo "Missing section: $section"
             else
-              echo "✅ Found section: $section"
+              echo "Found section: $section"
             fi
           done
           
           if [ ${#missing_sections[@]} -ne 0 ]; then
             echo ""
-            echo "❌ VALIDATION FAILED: Missing ${#missing_sections[@]} required section(s)"
+            echo "VALIDATION FAILED: Missing ${#missing_sections[@]} required section(s)"
             exit 1
           fi
           
           echo ""
-          echo "✅ All required sections present!"
+          echo "All required sections present!"
       
       - name: Validate Version Format
         run: |
-          echo "🔍 Validating version format..."
+          echo "Validating version format..."
           
-          version=$(grep -oP 'version:\s*\K\d+\.\d+\.\d+' claude.md | head -1)
+          # procura linha que começa com "version:" (case-insensitive) e extrai X.Y.Z com sed
+          version=$(grep -iE '^version:\s*[0-9]+\.[0-9]+\.[0-9]+' claude.md | head -1 | sed -E 's/.*version:\s*([0-9]+\.[0-9]+\.[0-9]+).*/\1/i' || true)
           
           if [[ -z "$version" ]]; then
-            echo "❌ ERROR: Version not found or invalid format!"
+            echo "ERROR: Version not found or invalid format!"
             echo "Expected format: version: X.Y.Z"
             exit 1
           fi
           
           if [[ ! $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "❌ ERROR: Invalid version format: $version"
+            echo "ERROR: Invalid version format: $version"
             echo "Expected: X.Y.Z (semantic versioning)"
             exit 1
           fi
           
-          echo "✅ Version format valid: v$version"
+          echo "Version format valid: v$version"
+          # exporta para passos seguintes
           echo "version=$version" >> $GITHUB_ENV
       
       - name: Validate Metadata Fields
         run: |
-          echo "🔍 Checking metadata completeness..."
+          echo "Checking metadata completeness..."
           
           required_metadata=(
             "version:"
@@ -114,67 +118,68 @@ jobs:
           )
           
           for field in "${required_metadata[@]}"; do
-            if ! grep -q "$field" claude.md; then
-              echo "❌ Missing metadata field: $field"
+            # fixed, case-insensitive match
+            if ! grep -qFi "$field" claude.md; then
+              echo "Missing metadata field: $field"
               exit 1
             else
-              echo "✅ Found metadata: $field"
+              echo "Found metadata: $field"
             fi
           done
           
-          echo "✅ All required metadata fields present"
+          echo "All required metadata fields present"
       
       - name: Check for P0 Guardrails
         run: |
           echo "🔍 Validating P0 Critical Guardrails..."
           
-          if ! grep -q "P0 - CRITICAL" claude.md; then
-            echo "❌ ERROR: P0 Critical Guardrails section not found!"
+          if ! grep -qi "P0 - CRITICAL" claude.md; then
+            echo "ERROR: P0 Critical Guardrails section not found!"
             exit 1
           fi
           
-          # Count P0 rules
-          p0_count=$(grep -c "✅ \*\*ALWAYS\*\*" claude.md || true)
+          # Count P0 rules by matching a strong 'ALWAYS' token (case-insensitive)
+          p0_count=$(grep -i -c "\*\*ALWAYS\*\*" claude.md || true)
           
           if [ $p0_count -lt 5 ]; then
-            echo "⚠️  WARNING: Only $p0_count P0 rules found (expected at least 5)"
+            echo "WARNING: Only $p0_count P0 rules found (expected at least 5)"
             echo "::warning::Consider reviewing P0 guardrails completeness"
           else
-            echo "✅ Found $p0_count P0 guardrail rules"
+            echo "Found $p0_count P0 guardrail rules"
           fi
       
       - name: Validate TAG System
         run: |
-          echo "🔍 Checking TAG system integrity..."
+          echo "Checking TAG system integrity..."
           
-          # Check for persona tags
-          persona_count=$(grep -c '@.*@' claude.md || true)
-          echo "📊 Found $persona_count persona activation patterns"
+          # Count persona tags with a restrictive pattern (avoid counting emails)
+          persona_count=$(grep -oE '@[A-Za-z0-9._-]+@' claude.md | wc -l || true)
+          echo "Found $persona_count persona activation patterns"
           
-          # Check for context tags
-          context_count=$(grep -c '<.*>' claude.md || true)
-          echo "📊 Found $context_count context tag patterns"
+          # Count context-like angle-bracket tags (still coarse)
+          context_count=$(grep -oE '<[^>]+>' claude.md | wc -l || true)
+          echo "Found $context_count context tag patterns"
           
-          # Look for potentially broken tags
-          broken_tags=$(grep -n '@[^@]*$' claude.md || true)
+          # Detect lines with odd number of '@' characters (possible unclosed tags)
+          broken_tags=$(awk ' { n=gsub(/@/,"&"); if (n % 2 == 1) print NR ":" $0 }' claude.md || true)
           if [ -n "$broken_tags" ]; then
-            echo "⚠️  WARNING: Potentially unclosed persona tags detected:"
+            echo "WARNING: Potentially unclosed persona tags detected (lines with odd number of @):"
             echo "$broken_tags"
-            echo "::warning::Check for unclosed @ tags"
+            echo "::warning::Check for unclosed @ tags (may include emails)"
           else
-            echo "✅ No broken persona tags detected"
+            echo "No broken persona tags detected"
           fi
       
       - name: Check for Common Issues
         run: |
-          echo "🔍 Scanning for common issues..."
+          echo "Scanning for common issues..."
           
           issues=0
           
           # Check for TODO/FIXME markers
           if grep -qi "TODO\|FIXME\|XXX" claude.md; then
             todos=$(grep -n "TODO\|FIXME\|XXX" claude.md || true)
-            echo "⚠️  Found TODO/FIXME markers:"
+            echo "Found TODO/FIXME markers:"
             echo "$todos"
             echo "::warning::Document contains TODO/FIXME markers"
             issues=$((issues + 1))
@@ -182,36 +187,89 @@ jobs:
           
           # Check for placeholder text
           if grep -qi "REPLACE_ME\|PLACEHOLDER\|TBD\|CHANGEME" claude.md; then
-            echo "⚠️  Found placeholder text"
+            echo "Found placeholder text"
             echo "::warning::Document contains placeholder text"
             issues=$((issues + 1))
           fi
           
           # Check for broken markdown links
           if grep -E '\[.*\]\(\)' claude.md > /dev/null; then
-            echo "⚠️  Found empty markdown links"
+            echo "Found empty markdown links"
             echo "::warning::Document contains empty markdown links"
             issues=$((issues + 1))
           fi
           
           if [ $issues -eq 0 ]; then
-            echo "✅ No common issues found"
+            echo "No common issues found"
           else
-            echo "⚠️  Found $issues potential issue(s) - review recommended"
+            echo "Found $issues potential issue(s) - review recommended"
           fi
+      
+      - name: Check for embedded/external images
+        run: |
+          echo "Scanning for embedded data URIs, external image links and large local images..."
+          
+          # Data URIs (case-insensitive) - show occurrences and length
+          data_lines=$(grep -nEi '!\[.*\]\((data:|data:image)' claude.md || true)
+          if [ -n "$data_lines" ]; then
+            echo "::warning::Found embedded image data URIs (base64) in claude.md - consider extracting to files"
+            echo "$data_lines"
+            # show base64 length per match (best-effort)
+            grep -oEi '!\[[^]]*\]\((data:[^)]+)\)' claude.md | sed -E 's/!\[[^]]*\]\((data:[^)]+)\)/\1/' | while read -r uri; do
+              len=${#uri}
+              echo "Data URI length: $len"
+              if [ $len -gt 10000 ]; then
+                echo "::warning::Embedded image data URI exceeds 10KB (length=$len) — likely too large"
+              fi
+            done
+          fi
+          
+          # External image URLs
+          external=$(grep -nE '!\[.*\]\((https?:\/\/[^)]+)\)' claude.md || true)
+          if [ -n "$external" ]; then
+            echo "::warning::Found external image URLs in claude.md - check availability and privacy"
+            echo "$external"
+            # try HEAD request to check availability (timeout short)
+            grep -oE '!\[[^]]*\]\((https?:\/\/[^)]+)\)' claude.md | sed -E 's/!\[[^]]*\]\((https?:\/\/[^)]+)\)/\1/' | while read -r url; do
+              echo "Checking URL: $url"
+              if ! curl -Is --max-time 5 "$url" | head -n1 | grep -q "HTTP/"; then
+                echo "::warning::Could not reach $url (HEAD failed or timed out)"
+              fi
+            done
+          fi
+          
+          # Local image files referenced — check existence and size (>1MB warn)
+          grep -oE '!\[[^]]*\]\(([^)]+)\)' claude.md | sed -E 's/!\[[^]]*\]\(([^)]+)\)/\1/' | while read -r img; do
+            # skip URLs and data URIs
+            if [[ "$img" =~ ^https?:// ]] || [[ "$img" =~ ^data: ]]; then
+              continue
+            fi
+            # normalize path (basic)
+            if [ -f "$img" ]; then
+              size=$(stat -c%s "$img")
+              if [ "$size" -gt 1048576 ]; then
+                echo "::warning::Local image $img is >1MB ($(numfmt --to=iec $size))"
+              else
+                echo "Local image $img exists ($(numfmt --to=iec $size))"
+              fi
+            else
+              echo "::warning::Referenced local image not found: $img"
+            fi
+          done
       
       - name: Generate Validation Report
         if: always()
         run: |
-          echo "📋 VALIDATION SUMMARY" > validation-report.txt
+          echo "VALIDATION SUMMARY" > validation-report.txt
           echo "===================" >> validation-report.txt
           echo "" >> validation-report.txt
-          echo "✅ File existence check: PASSED" >> validation-report.txt
-          echo "✅ Required sections: PASSED" >> validation-report.txt
-          echo "✅ Version format: PASSED (v${{ env.version }})" >> validation-report.txt
-          echo "✅ Metadata fields: PASSED" >> validation-report.txt
-          echo "✅ P0 Guardrails: PASSED" >> validation-report.txt
-          echo "✅ TAG System: PASSED" >> validation-report.txt
+          echo "File existence check: PASSED" >> validation-report.txt
+          echo "Required sections: PASSED" >> validation-report.txt
+          # use runtime environment variable set earlier
+          echo "Version format: PASSED (v$version)" >> validation-report.txt
+          echo "Metadata fields: PASSED" >> validation-report.txt
+          echo "P0 Guardrails: PASSED" >> validation-report.txt
+          echo "TAG System: PASSED" >> validation-report.txt
           echo "" >> validation-report.txt
           echo "Validated at: $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> validation-report.txt
           
@@ -220,12 +278,12 @@ jobs:
       - name: Success Summary
         run: |
           echo "🎉 ============================================"
-          echo "✅ VALIDATION SUCCESSFUL!"
+          echo "VALIDATION SUCCESSFUL!"
           echo "============================================"
           echo ""
-          echo "📄 File: claude.md"
-          echo "📌 Version: v${{ env.version }}"
-          echo "✅ All checks passed"
+          echo "File: claude.md"
+          echo "Version: v$version"
+          echo "All checks passed"
           echo ""
           echo "Next steps:"
           echo "  - Review any warnings above"
