@@ -61,24 +61,33 @@ jobs:
       
       - name: Create Versioned Backup
         run: |
+          set -euo pipefail
           filename="${{ steps.filename.outputs.filename }}"
-          
-          # Copy file with version header
-          cat > "versions/$filename" << 'HEADER'
-# ============================================
-# BACKUP OF claude.md
-# ============================================
-# Version: v${{ steps.version.outputs.version }}
-# Backup Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-# Commit: ${{ github.sha }}
-# Triggered by: ${{ github.actor }}
-# ============================================
 
-HEADER
-          
+          # Check if claude.md exists
+          if [ ! -f claude.md ]; then
+            echo "❌ ERROR: claude.md not found"
+            exit 1
+          fi
+
+          echo "✅ Found claude.md, creating backup..."
+
+          # Copy file with version header
+          cat > "versions/$filename" <<-'EOF'
+          # ============================================
+          # BACKUP OF claude.md
+          # ============================================
+          # Version: v${{ steps.version.outputs.version }}
+          # Backup Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          # Commit: ${{ github.sha }}
+          # Triggered by: ${{ github.actor }}
+          # ============================================
+
+          EOF
+
           # Append original content
           cat claude.md >> "versions/$filename"
-          
+
           echo "✅ Backup created: versions/$filename"
       
       - name: Create Latest Symlink
