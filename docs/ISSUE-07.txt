@@ -1,0 +1,193 @@
+TITLE:
+[Task 7] Backward Compatibility Testing for claude.md v1.7.0 [CRITICAL]
+
+LABELS:
+sonnet-4.5, priority:critical, phase-2-integration, testing
+
+DESCRIPTION:
+## Task: Backward Compatibility Testing
+
+**Priority:** CRITICAL (Validates no regressions)
+**Assigned Model:** Sonnet 4.5 REQUIRED (semantic understanding needed)
+**Estimated Time:** 30-45 minutes
+**Dependencies:** Task #4 (Integration)
+
+### Objective
+
+Verify that claude.md v1.7.0 maintains 100% backward compatibility with v1.6.0. All existing features, personas, guardrails, and behaviors must work identically.
+
+### Acceptance Criteria
+
+- [ ] All 10 personas still defined and functional
+- [ ] All TAG Activation Commands (v1.2) still present
+- [ ] All guardrails (P0-P3) still defined
+- [ ] All operational modes still defined
+- [ ] All output formats still defined
+- [ ] No sections accidentally modified
+- [ ] No sections accidentally deleted
+- [ ] TAG System section doesn't interfere with existing features
+- [ ] Comprehensive test report generated
+- [ ] Zero regressions detected
+
+### Implementation Notes
+
+**Testing Approach:**
+
+1. **Structural Comparison**
+   ```bash
+   # Extract section headers from v1.6.0
+   grep "^##" claude.md.v1.6.0.backup > v1.6.0-sections.txt
+
+   # Extract section headers from v1.7.0
+   grep "^##" claude.md > v1.7.0-sections.txt
+
+   # Compare (should only show TAG System as new)
+   diff v1.6.0-sections.txt v1.7.0-sections.txt
+   ```
+
+2. **Persona Verification**
+   - Verify all 10 personas listed in v1.6.0 are present in v1.7.0
+   - Check persona definitions are unchanged
+
+3. **TAG Activation Commands Verification**
+   - Verify TAG Activation Commands (v1.2) section exists
+   - Check all persona activation patterns (`@persona@`) still present
+   - Confirm no conflict with new search tags
+
+4. **Guardrails Verification**
+   - Verify all guardrails (P0, P1, P2, P3) still present
+   - Check definitions unchanged
+
+5. **Operational Modes Verification**
+   - Verify all modes still defined
+   - Check descriptions unchanged
+
+6. **Content Diff Analysis**
+   ```bash
+   # Detailed diff to verify only additions
+   diff -u claude.md.v1.6.0.backup claude.md > integration.diff
+
+   # Analyze diff:
+   # - Should show TAG System section as additions (+)
+   # - Should show minimal metadata changes
+   # - Should show NO deletions or modifications to existing content
+   ```
+
+7. **Integration Test**
+   - Verify TAG System section doesn't conflict with surrounding sections
+   - Check that search tags (`#CATEGORY`) and persona tags (`@persona@`) are clearly distinct
+   - Verify examples in TAG System are appropriate
+
+**Test Report Template:**
+```markdown
+# Backward Compatibility Test Report
+## Test Date: 2025-11-11
+## Files Tested:
+- claude.md.v1.6.0.backup (baseline)
+- claude.md v1.7.0 (new version)
+
+## Test Results:
+
+### 1. Structural Integrity: PASS/FAIL
+[Details]
+
+### 2. Persona System: PASS/FAIL
+[Details]
+
+### 3. TAG Activation Commands: PASS/FAIL
+[Details]
+
+### 4. Guardrails: PASS/FAIL
+[Details]
+
+### 5. Operational Modes: PASS/FAIL
+[Details]
+
+### 6. Content Analysis: PASS/FAIL
+[Details]
+
+### 7. Integration Test: PASS/FAIL
+[Details]
+
+## Summary:
+- Total Tests: 7
+- Passed: [X]
+- Failed: [X]
+- Regressions Detected: [X]
+
+## Conclusion:
+[PASS: Ready for deployment / FAIL: Issues must be resolved]
+```
+
+### Deliverable
+
+- Comprehensive test report: `docs/BACKWARD-COMPATIBILITY-TEST-REPORT.md`
+- PASS/FAIL determination
+- List of any issues found (if any)
+
+### Handover Template
+
+```markdown
+## Task #7 Handover - Backward Compatibility Testing [CRITICAL]
+
+### ✅ Completed
+- [X] Structural comparison: PASS/FAIL
+- [X] Persona verification: PASS/FAIL
+- [X] TAG Activation Commands: PASS/FAIL
+- [X] Guardrails verification: PASS/FAIL
+- [X] Operational modes: PASS/FAIL
+- [X] Content diff analysis: PASS/FAIL
+- [X] Integration test: PASS/FAIL
+
+### 📊 Status
+**Test Results:** [X/7 tests passed]
+**Overall Result:** PASS / FAIL
+**Regressions Detected:** [count]
+
+**Files Created:**
+- `docs/BACKWARD-COMPATIBILITY-TEST-REPORT.md` ([size])
+
+### 📝 Test Summary
+[Brief summary of testing performed and results]
+
+**Key Findings:**
+- [Finding 1]
+- [Finding 2]
+- [Finding 3]
+
+**Issues Detected (if any):**
+- [Issue 1]
+- [Issue 2]
+
+### 🚧 For Pierre's Review
+**CRITICAL - Please verify:**
+1. Review full test report: `docs/BACKWARD-COMPATIBILITY-TEST-REPORT.md`
+2. Overall result: [PASS/FAIL]
+3. Any concerns or questions about findings?
+
+**If FAIL:**
+- DO NOT proceed with deployment
+- Review issues detected
+- Determine if rollback is necessary
+
+**If PASS:**
+- Proceed to Task #8 (Deployment Documentation)
+
+### ⏭️ Next Session Prompt
+
+**If PASS:**
+```
+Task #7 approved. Backward compatibility verified successfully.
+Proceed with Task #8 (Create Deployment Documentation).
+Read issue #8 and execute according to specifications.
+```
+
+**If FAIL:**
+```
+Task #7 FAILED. Backward compatibility issues detected.
+DO NOT PROCEED. Review test report and determine corrective action.
+```
+
+### Dependencies Cleared
+- [X] Task #8 can now proceed (depends on Task 7 PASS)
+```

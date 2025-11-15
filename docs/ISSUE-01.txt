@@ -1,0 +1,87 @@
+TITLE:
+[Task 1] Create TAG-Protocol-QuickStart.md Cheat Sheet
+
+LABELS:
+haiku-4.5, priority:medium, phase-2-integration, documentation
+
+DESCRIPTION:
+## Task: Create TAG-Protocol-QuickStart.md
+
+**Priority:** Medium
+**Assigned Model:** Haiku 4.5
+**Estimated Time:** 20-30 minutes
+**Dependencies:** None (can run independently)
+
+### Objective
+
+Create a concise Quick Start guide (cheat sheet) for the TAG Protocol that Pierre can reference during daily work. This document should distill the TAG-Protocol-v1.0.md into its most essential and frequently-used elements.
+
+### Acceptance Criteria
+
+- [ ] File created at `docs/TAG-Protocol-QuickStart.md`
+- [ ] Document is 3-5 KB in size (concise)
+- [ ] Contains all required sections (see implementation notes)
+- [ ] Includes 5-6 real-world examples
+- [ ] Formatted in valid markdown
+- [ ] Easy to scan and reference quickly
+- [ ] Pierre reviews and approves content
+
+### Implementation Notes
+
+**Required Sections:**
+1. **Format Reference** - One-line format with explanation
+2. **Top Categories Table** - Quick reference table with category, symbol, and use case
+3. **Status Lifecycle** - Visual flow of status transitions
+4. **Common Patterns** - 3-5 most common tag patterns Pierre will use
+5. **Search Cheatsheet** - Quick search command templates
+6. **Examples** - 5-6 one-liner examples showing real tags
+
+**Reference Documents:**
+- `docs/TAG-Protocol-v1.0.md` (source material)
+- `docs/PRD-TAG-System-Integration-v1.0.md` (context)
+
+**Style Guidelines:**
+- Use tables for quick scanning
+- Keep explanations to 1-2 sentences max
+- Focus on "copy-paste ready" examples
+- Use Pierre's actual work context (Git, DB, Data, Infrastructure)
+
+### Deliverable
+
+- File: `docs/TAG-Protocol-QuickStart.md` (~3-5 KB)
+
+### Handover Template
+
+```markdown
+## Task #1 Handover - TAG-Protocol-QuickStart.md
+
+### ✅ Completed
+- [X] Created TAG-Protocol-QuickStart.md at docs/
+- [X] Document size: [X] KB
+- [X] All required sections included
+- [X] 5-6 examples provided
+
+### 📊 Status
+**Files Created:**
+- `docs/TAG-Protocol-QuickStart.md` ([size])
+
+**Validation:**
+- [X] Markdown syntax valid
+- [X] All sections present
+- [X] Appropriate length
+
+### 📝 Content Summary
+[Brief description of what's included]
+
+### 🚧 For Pierre's Review
+**Please verify:**
+1. Content is clear and easy to scan
+2. Examples are relevant to your work
+3. Format makes sense for quick reference
+
+### ⏭️ Next Session Prompt
+```
+Task #1 approved. This task was independent - you may proceed with any other task.
+Recommended: Start with Task #2 (Backup claude.md v1.6.0).
+```
+```
