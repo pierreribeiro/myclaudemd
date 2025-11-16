@@ -1,0 +1,152 @@
+TITLE:
+[Task 4] Integrate TAG System into claude.md v1.7.0 [CRITICAL]
+
+LABELS:
+sonnet-4.5, priority:critical, phase-2-integration, critical-integration
+
+DESCRIPTION:
+## Task: Integrate TAG System into claude.md v1.7.0
+
+**Priority:** CRITICAL (Zero-error requirement)
+**Assigned Model:** Sonnet 4.5 REQUIRED
+**Estimated Time:** 45-60 minutes
+**Dependencies:** Task #2 (Backup), Task #3 (Content)
+
+### Objective
+
+Insert the TAG System section into claude.md at the precise location, creating v1.7.0. This is a critical task requiring zero errors and absolute precision. No existing v1.6.0 content may be modified.
+
+### Acceptance Criteria
+
+- [ ] TAG System section inserted at correct location (after Persona System, before Output Formats)
+- [ ] ALL v1.6.0 content unchanged (except line numbers)
+- [ ] Valid markdown syntax
+- [ ] File size <50 KB
+- [ ] Internal structure maintained
+- [ ] Version number updated to 1.7.0 in metadata section
+- [ ] Changelog entry added for v1.7.0
+- [ ] File renders correctly (markdown preview)
+- [ ] Diff shows ONLY addition (no modifications to existing content)
+
+### Implementation Notes
+
+**Insertion Point:**
+- Find: `## 🎭 PERSONA SYSTEM (10 Profiles + Default)` section
+- Insert: After this entire section ends
+- Before: `## 📊 OUTPUT FORMATS & ARTIFACTS` section
+
+**Step-by-Step Process:**
+1. Read `claude.md` (current v1.6.0)
+2. Read `docs/TAG-SYSTEM-SECTION-CONTENT.md` (content from Task 3)
+3. Identify exact insertion point (line number)
+4. Create new file with:
+   - All content up to insertion point
+   - TAG System section (from Task 3)
+   - All content after insertion point
+5. Update metadata section (version 1.6.0 → 1.7.0)
+6. Add changelog entry
+7. Save as `claude.md` (v1.7.0)
+8. Verify with diff
+
+**Critical Safety Checks:**
+```bash
+# Verify only additions (no deletions/modifications)
+diff -u claude.md.v1.6.0.backup claude.md | grep "^-" | wc -l
+# Should be small (only version metadata lines)
+
+# Verify file size
+ls -lh claude.md
+# Should be ~33-34 KB
+
+# Verify markdown syntax
+# (Use markdown linter or preview)
+```
+
+**Metadata Updates Required:**
+- Version: `1.6.0` → `1.7.0`
+- Last Updated: `2025-11-11`
+- Changelog: Add entry for TAG System integration
+
+**Rollback Procedure:**
+If any issues arise:
+```bash
+cp claude.md.v1.6.0.backup claude.md
+```
+
+### Deliverable
+
+- File: `claude.md` (v1.7.0, ~33-34 KB)
+- Verification: Diff report showing only additions
+
+### Handover Template
+
+```markdown
+## Task #4 Handover - claude.md v1.7.0 Integration [CRITICAL]
+
+### ✅ Completed
+- [X] TAG System section inserted at correct location
+- [X] All v1.6.0 content unchanged (verified)
+- [X] Metadata updated to v1.7.0
+- [X] Changelog entry added
+- [X] Valid markdown syntax
+- [X] File size: [X] KB (<50 KB limit)
+
+### 📊 Status
+**Files Modified:**
+- `claude.md` (v1.6.0 → v1.7.0, [size])
+
+**Verification Results:**
+```
+# Diff statistics
+diff -u claude.md.v1.6.0.backup claude.md | wc -l
+[output - showing additions only]
+
+# File sizes
+ls -lh claude.md*
+[output showing v1.6.0 and v1.7.0 sizes]
+
+# Markdown validation
+[output from linter or preview]
+```
+
+### 📝 Technical Notes
+**Insertion Point:** Line [X] (after Persona System section)
+**Content Added:** ~900 words, TAG System for Chat Search (v1.0)
+**Changes Made:**
+- Added TAG System section
+- Updated version metadata: 1.6.0 → 1.7.0
+- Added changelog entry
+
+**Critical Safety Verification:**
+- [X] Backup exists (claude.md.v1.6.0.backup)
+- [X] Only additions made (no deletions/modifications)
+- [X] File structure intact
+- [X] Markdown syntax valid
+
+### 🚧 For Pierre's Review
+**CRITICAL - Please verify carefully:**
+1. Open claude.md in markdown preview - does it render correctly?
+2. Scroll to TAG System section - is it in the right place?
+3. Check a few v1.6.0 sections - are they unchanged?
+4. File size reasonable (~33-34 KB)?
+
+**If ANY issues detected:**
+- DO NOT proceed
+- Restore backup: `cp claude.md.v1.6.0.backup claude.md`
+- Report issue for investigation
+
+### ⏭️ Next Session Prompt
+```
+Task #4 approved. Integration verified successfully.
+You may now proceed with parallel tasks:
+- Task #5 (Update Metadata - Haiku)
+- Task #6 (Validate Markdown - Haiku)
+- Task #7 (Backward Compatibility Testing - Sonnet)
+```
+
+### Dependencies Cleared
+- [X] Task #5 can now proceed (depends on Task 4)
+- [X] Task #6 can now proceed (depends on Task 4)
+- [X] Task #7 can now proceed (depends on Task 4)
+- [X] Task #8 blocked until Task 7 completes
+```

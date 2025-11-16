@@ -1,0 +1,95 @@
+TITLE:
+[Task 6] Validate Markdown Syntax for claude.md v1.7.0
+
+LABELS:
+haiku-4.5, priority:high, phase-2-integration, testing
+
+DESCRIPTION:
+## Task: Validate Markdown Syntax
+
+**Priority:** High
+**Assigned Model:** Haiku 4.5
+**Estimated Time:** 5 minutes
+**Dependencies:** Task #4 (Integration)
+
+### Objective
+
+Validate that claude.md v1.7.0 has no markdown syntax errors and renders correctly. This is an automated quality check.
+
+### Acceptance Criteria
+
+- [ ] Markdown linter run successfully
+- [ ] Zero syntax errors detected
+- [ ] Zero rendering issues detected
+- [ ] All links verified (internal references)
+- [ ] All code blocks properly formatted
+- [ ] Validation report generated
+
+### Implementation Notes
+
+**Validation Tools:**
+1. **markdownlint** (if available)
+   ```bash
+   markdownlint claude.md
+   ```
+
+2. **Markdown preview** (manual check)
+   - Open in VS Code or similar
+   - Verify sections render correctly
+   - Check for broken formatting
+
+3. **Link validation**
+   - Verify internal links (e.g., `[TAG-Protocol-v1.0.md](docs/TAG-Protocol-v1.0.md)`)
+   - Ensure files referenced actually exist
+
+4. **Code block validation**
+   - Check all ``` code blocks have closing tags
+   - Verify indentation is consistent
+
+**Expected Output:**
+- Clean linting report (zero errors)
+- Visual confirmation of correct rendering
+
+### Deliverable
+
+- Validation report (text or screenshot)
+- Confirmation that claude.md v1.7.0 is syntactically valid
+
+### Handover Template
+
+```markdown
+## Task #6 Handover - Markdown Syntax Validation
+
+### ✅ Completed
+- [X] Markdown linting: PASS
+- [X] Syntax errors: 0
+- [X] Rendering verified: PASS
+- [X] Links validated: PASS
+
+### 📊 Status
+**Validation Results:**
+```
+[paste linter output or validation results]
+```
+
+**Files Validated:**
+- `claude.md` (v1.7.0) - PASS
+
+### 📝 Technical Notes
+- All markdown syntax valid
+- No rendering issues detected
+- Internal links verified (all reference files exist)
+- Code blocks properly formatted
+
+### 🚧 For Pierre's Review
+**Please verify:**
+1. Open claude.md in a markdown preview
+2. Scroll through document - does everything look correct?
+3. Click on internal links - do they work?
+
+### ⏭️ Next Session Prompt
+```
+Task #6 approved. Markdown validation passed.
+This task is independent - you may proceed with other tasks or wait for Task #7 (Testing) results.
+```
+```

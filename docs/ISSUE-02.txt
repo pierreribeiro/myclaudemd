@@ -1,0 +1,90 @@
+TITLE:
+[Task 2] Backup claude.md v1.6.0 Before Integration
+
+LABELS:
+haiku-4.5, priority:high, phase-2-integration, operational
+
+DESCRIPTION:
+## Task: Backup claude.md v1.6.0
+
+**Priority:** High (Safety Critical)
+**Assigned Model:** Haiku 4.5
+**Estimated Time:** 2 minutes
+**Dependencies:** None
+
+### Objective
+
+Create a byte-identical backup of claude.md v1.6.0 before any integration work begins. This is a safety measure to enable easy rollback if needed.
+
+### Acceptance Criteria
+
+- [ ] Backup file created at `claude.md.v1.6.0.backup`
+- [ ] File is byte-identical to original `claude.md`
+- [ ] File size matches original (32,651 bytes)
+- [ ] Backup verified (checksum or diff comparison)
+- [ ] Git committed separately for safety
+
+### Implementation Notes
+
+**Commands:**
+```bash
+# Create backup
+cp claude.md claude.md.v1.6.0.backup
+
+# Verify byte-identical
+diff claude.md claude.md.v1.6.0.backup
+# (Should produce no output)
+
+# Check size
+ls -lh claude.md*
+```
+
+**Safety:**
+- This backup is critical - do not skip verification
+- Commit backup to git separately before proceeding with Task 4
+
+### Deliverable
+
+- File: `claude.md.v1.6.0.backup` (32,651 bytes, identical to original)
+
+### Handover Template
+
+```markdown
+## Task #2 Handover - Backup claude.md v1.6.0
+
+### ✅ Completed
+- [X] Backup created: claude.md.v1.6.0.backup
+- [X] Byte-identical verification: PASS
+- [X] File size verification: PASS
+
+### 📊 Status
+**Files Created:**
+- `claude.md.v1.6.0.backup` (32,651 bytes)
+
+**Verification Results:**
+```
+diff claude.md claude.md.v1.6.0.backup
+[output - should be empty]
+
+ls -lh claude.md*
+[output showing both files with identical sizes]
+```
+
+### 📝 Technical Notes
+Backup created successfully. Original claude.md v1.6.0 is safe and can be restored at any time.
+
+### 🚧 For Pierre's Review
+**Please verify:**
+1. Backup file exists
+2. File size matches (32,651 bytes)
+
+### ⏭️ Next Session Prompt
+```
+Task #2 approved. Backup verified.
+Proceed with Task #3 (Create TAG System Section Content).
+Read issue #3 and execute according to specifications.
+```
+
+### Dependencies Cleared
+- [X] Task #4 can now proceed (backup prerequisite met)
+```
