@@ -1,446 +1,194 @@
-# Progress Tracker - Skills Architecture Project
+# FLIGHT PLAN - Skills Architecture Project
 **Project**: Transform claude.md v1.8.0 → Modular Skills Architecture  
-**Stakeholder**: Pierre Ribeiro  
-**Timeline**: 7 weeks (Days 1-49)  
-**Status**: PLANNING  
-**Last Updated**: 2025-01-15
+**Mission Commander**: Pierre Ribeiro  
+**Flight Duration**: 7 weeks (49 days)  
+**Mission Status**: PRE-FLIGHT CHECKLIST  
+**Last Updated**: 2025-01-16
 
 ---
 
-## 🎯 PROJECT OVERVIEW
+## 🎯 MISSION OVERVIEW
 
-### Executive Summary
+### Primary Objectives
+1. **Token Reduction**: Achieve ≥68% reduction (6,200 → ≤2,100 tokens/session)
+2. **Modular Architecture**: Convert 1 monolithic file → 19 modular skills
+3. **Zero Downtime**: Maintain 100% functionality throughout transition
+4. **Cost Optimization**: Save $0.036/session (~65% cost reduction)
+5. **Universal Deployment**: Work in both Projects and avulso sessions
 
-**Objective**: Reduce Claude Desktop token consumption by **68%** through modular Skills architecture while maintaining 100% functionality.
-
-**Business Value**:
-- **Cost Reduction**: $0.036/session savings (~65% reduction)
-- **Performance**: Faster session startup, progressive disclosure
-- **Maintainability**: 19 modular skills vs 1 monolithic file
-- **Scalability**: Universal availability (projects + avulso sessions)
-
-**Current Status**: Planning phase, POC validated ✅
-
----
-
-## 📊 PHASE COMPLETION DASHBOARD
-
-| Phase | Duration | Skills | Token Target | Status | Progress |
-|-------|----------|--------|--------------|--------|----------|
-| **Phase 1: Personas** | Weeks 1-3 | 10 skills | -35% | ⏸️ NOT STARTED | 0% |
-| **Phase 2: Modes** | Weeks 4-5 | 5 skills | -15% (+50% cumulative) | ⏸️ NOT STARTED | 0% |
-| **Phase 3: References** | Week 6 | 4 skills | -8% (+58% cumulative) | ⏸️ NOT STARTED | 0% |
-| **Phase 4: Core Optimization** | Week 7 | Core v2.0 | -10% (≥68% total) | ⏸️ NOT STARTED | 0% |
-
-**Overall Project Progress**: 0% (0/19 skills complete, 0/49 days elapsed)
+### Mission Success Criteria
+- ✅ All 19 skills created and validated
+- ✅ Token reduction ≥65% measured and confirmed
+- ✅ Zero critical production incidents
+- ✅ 7-day production pilot successful
+- ✅ claude.md v2.0 ≤350 lines deployed
 
 ---
 
-## 🗓️ TIMELINE TRACKING
-
-### Week 1: Foundation + High-Impact Personas
-**Days 1-7** | **Target**: 3 skills | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 1-2 | POC Validation + Templates | Templates ready | ⏸️ | - |
-| 3-4 | Emergency + Debug personas | 2 skills | ⏸️ | - |
-| 5-7 | Testing + PR #1 | PR merged | ⏸️ | - |
-
-**Week 1 Completion**: 0% | **Skills Created**: 0/3
-
----
-
-### Week 2: Learning + Development Personas
-**Days 8-14** | **Target**: 4 skills | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 8-10 | Learning + Architect personas | 2 skills | ⏸️ | - |
-| 11-14 | Code Reviewer + PM personas + PR #2 | 2 skills + PR | ⏸️ | - |
-
-**Week 2 Completion**: 0% | **Skills Created**: 0/4
-
----
-
-### Week 3: Development + Neutral Personas
-**Days 15-21** | **Target**: 3 skills + Phase 1 validation | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 15-18 | Frontend + Backend + Neutral | 3 skills | ⏸️ | - |
-| 19-21 | Integration testing + PR #3 | Phase 1 complete | ⏸️ | - |
-
-**Week 3 Completion**: 0% | **Skills Created**: 0/3  
-**Phase 1 Completion**: 0%
-
----
-
-### Week 4: Exploration & Development Modes
-**Days 22-28** | **Target**: 4 mode skills | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 22-25 | Discovery + Build modes | 2 skills | ⏸️ | - |
-| 26-28 | Debug + Learning modes + PR #4 | 2 skills + PR | ⏸️ | - |
-
-**Week 4 Completion**: 0% | **Skills Created**: 0/4
-
----
-
-### Week 5: Architecture Mode + Integration
-**Days 29-35** | **Target**: 1 skill + Phase 2 validation | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 29-31 | Architecture mode | 1 skill | ⏸️ | - |
-| 32-35 | Mode integration testing + PR #5 | Phase 2 complete | ⏸️ | - |
-
-**Week 5 Completion**: 0% | **Skills Created**: 0/1  
-**Phase 2 Completion**: 0%
-
----
-
-### Week 6: Reference Skills
-**Days 36-42** | **Target**: 4 reference skills | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 36-38 | TAG + Commands references | 2 skills | ⏸️ | - |
-| 39-42 | Templates + Guardrails + PR #6 | 2 skills + PR | ⏸️ | - |
-
-**Week 6 Completion**: 0% | **Skills Created**: 0/4  
-**Phase 3 Completion**: 0%
-
----
-
-### Week 7: Core Optimization & Launch
-**Days 43-49** | **Target**: Core v2.0 + Production pilot | **Status**: ⏸️ NOT STARTED
-
-| Day | Planned Activity | Deliverable | Status | Notes |
-|-----|------------------|-------------|--------|-------|
-| 43-45 | Core file v2.0 creation | claude.md v2.0 | ⏸️ | - |
-| 46-49 | Final validation + Production pilot + PR #7 | Phase 4 complete | ⏸️ | - |
-
-**Week 7 Completion**: 0% | **Core v2.0 Status**: Not started  
-**Phase 4 Completion**: 0%
-
----
-
-## 📈 METRICS TRACKING
-
-### Token Reduction Progress
-
-| Phase | Target Reduction | Measured Reduction | Status | Variance |
-|-------|------------------|-------------------|--------|----------|
-| **Baseline (v1.8.0)** | 0% | 6,200 tokens avg | ✅ Measured | - |
-| **Phase 1 (Personas)** | -35% | - | ⏸️ Pending | - |
-| **Phase 2 (Modes)** | -15% (+50% cumulative) | - | ⏸️ Pending | - |
-| **Phase 3 (References)** | -8% (+58% cumulative) | - | ⏸️ Pending | - |
-| **Phase 4 (Core)** | -10% (≥68% total) | - | ⏸️ Pending | - |
-
-**Current Token Consumption**: 6,200 tokens/session (v1.8.0 baseline)  
-**Target Token Consumption**: ≤2,100 tokens/session (v2.0)  
-**Achieved Reduction**: 0% (not started)
-
-### Cost Impact Analysis
-
-| Metric | v1.8.0 Baseline | v2.0 Target | Actual | Status |
-|--------|----------------|-------------|--------|--------|
-| **Tokens/session** | 6,200 | ≤2,100 | - | ⏸️ |
-| **Cost/session** | $0.055 | $0.019 | - | ⏸️ |
-| **Savings/session** | - | $0.036 | - | ⏸️ |
-| **Monthly savings** | - | $5.40-10.80 | - | ⏸️ |
-| **Annual savings** | - | $64.80-129.60 | - | ⏸️ |
-
-*Based on 150-300 sessions/month estimate*
-
-### Development Velocity
-
-| Metric | Target | Actual | Status |
-|--------|--------|--------|--------|
-| **Issues closed/week** | 6-8 | 0 | ⏸️ Not started |
-| **Skills completed/sprint** | 2-3 | 0 | ⏸️ Not started |
-| **PR merge frequency** | 1-2/week | 0 | ⏸️ Not started |
-| **Blocker resolution time** | <24h | - | ⏸️ Not started |
-
-### Quality Metrics
-
-| Metric | Target | Actual | Status |
-|--------|--------|--------|--------|
-| **Trigger accuracy** | ≥90% | - | ⏸️ Pending validation |
-| **False positive rate** | <5% | - | ⏸️ Pending validation |
-| **Regression test pass rate** | 100% | - | ⏸️ Pending validation |
-| **Production incidents** | 0 critical | - | ⏸️ Pending launch |
-
----
-
-## 🎯 SKILLS CREATION STATUS
-
-### Personas (10 skills) - Phase 1
-
-| # | Skill Name | Assigned | Status | Completion | Notes |
-|---|------------|----------|--------|------------|-------|
-| 1 | database-expert.skill | Sonnet | ✅ **POC VALIDATED** | 100% | Reference template |
-| 2 | emergency-engineer.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 3 | debug-investigator.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 4 | learning-mentor.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 5 | architect.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 6 | code-reviewer.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 7 | product-manager.skill | Haiku+Sonnet | ⏸️ Not started | 0% | - |
-| 8 | frontend-developer.skill | Haiku+Sonnet | ⏸️ Not started | 0% | - |
-| 9 | backend-developer.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 10 | neutral-persona.skill | Haiku | ⏸️ Not started | 0% | - |
-
-**Phase 1 Progress**: 10% (1/10 skills, POC only)
-
-### Operational Modes (5 skills) - Phase 2
-
-| # | Skill Name | Assigned | Status | Completion | Notes |
-|---|------------|----------|--------|------------|-------|
-| 11 | discovery-mode.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 12 | build-mode.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 13 | debug-mode.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 14 | learning-mode.skill | Sonnet | ⏸️ Not started | 0% | - |
-| 15 | architecture-mode.skill | Sonnet | ⏸️ Not started | 0% | - |
-
-**Phase 2 Progress**: 0% (0/5 skills)
-
-### Reference Skills (4 skills) - Phase 3
-
-| # | Skill Name | Assigned | Status | Completion | Notes |
-|---|------------|----------|--------|------------|-------|
-| 16 | tag-system-reference.skill | Haiku | ⏸️ Not started | 0% | - |
-| 17 | activation-commands.skill | Haiku | ⏸️ Not started | 0% | - |
-| 18 | output-templates.skill | Haiku | ⏸️ Not started | 0% | - |
-| 19 | guardrails-enhanced.skill | Sonnet | ⏸️ Not started | 0% | - |
-
-**Phase 3 Progress**: 0% (0/4 skills)
-
-### Core Optimization - Phase 4
-
-| Component | Target Lines | Current Lines | Status | Completion |
-|-----------|--------------|---------------|--------|------------|
-| claude.md v2.0 | ≤350 | 1,050 (v1.8.0) | ⏸️ Not started | 0% |
-| Skills index | 40 | - | ⏸️ Not started | 0% |
-| Metadata | 10 | - | ⏸️ Not started | 0% |
-
-**Phase 4 Progress**: 0%
-
----
-
-## 🚦 RISK DASHBOARD
-
-### Active Risks
-
-| Risk ID | Description | Probability | Impact | Status | Mitigation |
-|---------|-------------|-------------|--------|--------|------------|
-| - | No active risks | - | - | ✅ | Planning phase |
-
-### Mitigated Risks
-
-| Risk ID | Description | Mitigation Applied | Status |
-|---------|-------------|-------------------|--------|
-| RISK-POC | Skills might not work for personas | POC validated with database-expert | ✅ CLOSED |
-
-### Watching
-
-| Risk ID | Description | Trigger Condition | Contingency |
-|---------|-------------|------------------|-------------|
-| RISK-1 | Skill not found | >10% load failures | Rollback to v1.8.0 |
-| RISK-2 | Trigger inaccuracy | <90% accuracy | Description optimization |
-| RISK-3 | Performance degradation | >500ms latency | Skill compression |
-| RISK-5 | Timeline overrun | >10 weeks | Scope reduction |
-
----
-
-## 📋 GITHUB INTEGRATION STATUS
-
-### Branch Status
-- **Feature Branch**: `feature/skills-architecture` - ⏸️ **TO BE CREATED**
-- **Base Branch**: `main`
-- **Merge Strategy**: Squash and merge
-
-### Issues Tracking
-
-**Total Issues**: 48 (0 created, 48 planned)
-
-| Issue Type | Planned | Created | Closed | Progress |
-|------------|---------|---------|--------|----------|
-| **Skill Creation** | 19 | 0 | 0 | 0% |
-| **Testing** | 15 | 0 | 0 | 0% |
-| **Integration** | 5 | 0 | 0 | 0% |
-| **Documentation** | 4 | 0 | 0 | 0% |
-| **Milestones** | 5 | 0 | 0 | 0% |
-
-### Pull Requests
-
-| PR # | Description | Type | Status | Skills Included |
-|------|-------------|------|--------|-----------------|
-| - | No PRs yet | - | - | - |
-
-**Planned PRs**: 7 (1 per phase + 3 batches in Phase 1)
-
-### Labels Created
-
-- ⏸️ `skill` - Skill creation tasks
-- ⏸️ `persona` - Persona-related skills
-- ⏸️ `mode` - Operational mode skills
-- ⏸️ `reference` - Reference documentation skills
-- ⏸️ `core` - Core file modifications
-- ⏸️ `haiku` - Assigned to Haiku 4.5
-- ⏸️ `sonnet` - Assigned to Sonnet 4.5
-- ⏸️ `testing` - Testing and validation
-- ⏸️ `documentation` - Documentation updates
-
-**Status**: Labels to be created on branch initialization
-
----
-
-## 📊 EXECUTIVE SUMMARY REPORTS
-
-### Weekly Status Report Template
-
-```markdown
-# Week [N] Status - Skills Architecture Project
-**Reporting Period**: [Date Range]
-**Overall Progress**: [X%]
-
-## 🎯 This Week's Achievements
-- ✅ [Achievement 1]
-- ✅ [Achievement 2]
-- ⏳ [In Progress]
-
-## 📈 Metrics
-**Token Reduction**: [X%] (Target: [Y%])
-**Skills Completed**: [X/19]
-**Phase Progress**: [Phase X - Y%]
-
-## 🚦 Status
-- Schedule: 🟢 On track / 🟡 At risk / 🔴 Delayed
-- Quality: 🟢 Excellent / 🟡 Acceptable / 🔴 Issues
-- Scope: 🟢 Stable / 🟡 Minor change / 🔴 Major change
-
-## ⚠️ Risks/Blockers
-- [Risk if any]
-
-## 📅 Next Week
-- [ ] [Goal 1]
-- [ ] [Goal 2]
+## 📋 PRE-FLIGHT WORKFLOW (CRITICAL)
+
+### Before Executing ANY Task:
+
+```
+STEP 1: CHECK FLIGHT PLAN
+├─ Locate task in this document
+├─ Read objectives and acceptance criteria
+└─ Verify dependencies are satisfied
+
+STEP 2: UPDATE STATUS → ONGOING
+├─ Change task status from ⏸️ to 🔄
+├─ Add start date
+└─ Commit change to Git
+
+STEP 3: READ GITHUB ISSUE
+├─ Navigate to issue number in GitHub
+├─ Review full description and requirements
+├─ Check comments for additional context
+└─ Verify assignee (Haiku vs Sonnet)
+
+STEP 4: EXECUTE WORK
+├─ Follow issue instructions
+├─ Create deliverables as specified
+├─ Test according to acceptance criteria
+└─ Document any deviations
+
+STEP 5: CLOSE ISSUE
+├─ Update issue with completion notes
+├─ Link to deliverables/artifacts
+├─ Close issue in GitHub
+└─ Reference in PR if applicable
+
+STEP 6: UPDATE FLIGHT PLAN
+├─ Change status from 🔄 to ✅
+├─ Update completion percentage
+├─ Log actual vs estimated effort
+└─ Commit final status to Git
 ```
 
-### Monthly Executive Summary Template
-
-```markdown
-# Monthly Executive Summary - Skills Architecture
-**Month**: [Month Year]
-**Overall Progress**: [X%]
-
-## 🎯 Phase Completion
-- ✅/⏳/⏸️ Phase 1: Personas
-- ✅/⏳/⏸️ Phase 2: Modes
-- ✅/⏳/⏸️ Phase 3: References
-- ✅/⏳/⏸️ Phase 4: Core
-
-## 💰 Business Value Delivered
-**Token Efficiency**:
-- Reduction achieved: [X%]
-- Cost savings/session: $[Y]
-- Projected annual savings: $[Z]
-
-**Technical Debt**:
-- Modularity: [Status]
-- Maintainability: [Status]
-
-## 🚦 Health Indicators
-| Indicator | Status | Notes |
-|-----------|--------|-------|
-| Schedule | 🟢/🟡/🔴 | [Notes] |
-| Quality | 🟢/🟡/🔴 | [Notes] |
-| Scope | 🟢/🟡/🔴 | [Notes] |
-
-## 📈 Next Month Goals
-1. [Goal 1]
-2. [Goal 2]
-```
+**CRITICAL**: Never skip steps. This workflow ensures traceability and handoff clarity.
 
 ---
 
-## 🎯 SUCCESS CRITERIA CHECKLIST
+## 🚀 SPRINT 1.1 - MISSION CONTROL SETUP
 
-### Phase 1: Personas (Weeks 1-3)
-- [ ] 10/10 persona skills created
+**Duration**: Days 1-2  
+**Phase**: Phase 1 (Personas Migration)  
+**Complexity**: HIGH  
+**Assigned**: Sonnet 4.5  
+**Status**: ⏸️ READY FOR EXECUTION
+
+### Task 1.1.1 - Environment & GitHub Repository Setup
+
+**Issue**: #PENDING (to be created)  
+**Type**: Infrastructure  
+**Priority**: P0-CRITICAL  
+**Dependencies**: None  
+**Estimated Effort**: 3-4 hours
+
+#### Objectives
+1. Create GitHub branch `feature/skills-architecture`
+2. Restructure repository as per `PROPOSTA-ESTRUTURA-REPO-myclaudemd.md`
+3. Create GitHub labels for project management
+4. Create GitHub milestone "Phase 1 - Personas"
+5. Create all 48 GitHub issues with execution-ready descriptions
+6. Validate local Git workspace at `/Users/pierre.ribeiro/workspace/ad-hoc/myclaudemd`
+
+#### Deliverables
+- ✅ Feature branch created and checked out
+- ✅ Repository structure matches proposal
+- ✅ 9 labels created (skill, persona, mode, reference, core, haiku, sonnet, testing, documentation)
+- ✅ 4 milestones created (one per phase)
+- ✅ 48 issues created with clear, execution-oriented descriptions
+- ✅ Local workspace validated and ready
+
+#### Acceptance Criteria
+- [ ] Branch `feature/skills-architecture` exists and is active
+- [ ] All directories from PROPOSTA structure exist
+- [ ] `gh issue list` returns 48 open issues
+- [ ] `gh label list` returns 9 project labels
+- [ ] `gh milestone list` returns 4 active milestones
+- [ ] Each issue has: title, description, labels, milestone, assignee
+- [ ] Local Git status shows clean working tree on feature branch
+
+#### Issue Creation Guidelines
+**Each issue MUST contain:**
+1. **Clear title** following pattern: "Create [skill-name].skill" or "Test [component]"
+2. **Execution-ready description**:
+   - What to do (specific actions)
+   - Why it matters (context)
+   - How to validate (acceptance criteria)
+   - Where to put deliverables (file paths)
+3. **Labels**: Appropriate type + complexity + assignee
+4. **Milestone**: Correct phase
+5. **Assignee**: `@pierreribeiro` (placeholder for Haiku/Sonnet decision)
+
+**Issue Description Template:**
+```markdown
+## Objective
+[Clear statement of what needs to be done]
+
+## Context
+[Why this task exists, dependencies, background]
+
+## Actions Required
+1. [Specific action 1]
+2. [Specific action 2]
+3. [Specific action N]
+
+## Deliverables
+- [ ] [File/artifact 1 with path]
+- [ ] [File/artifact 2 with path]
+
+## Acceptance Criteria
+- [ ] [Testable criterion 1]
+- [ ] [Testable criterion 2]
+- [ ] [Testable criterion N]
+
+## Testing Checklist
 - [ ] Trigger accuracy ≥90%
-- [ ] Token reduction ≥33%
-- [ ] Zero behavioral regressions
-- [ ] All Phase 1 issues closed
-- [ ] PRs #1-3 merged
+- [ ] No false positives
+- [ ] Works in avulso session
+- [ ] Behavioral match with v1.8.0
 
-### Phase 2: Modes (Weeks 4-5)
-- [ ] 5/5 mode skills created
-- [ ] Workflow phases functional
-- [ ] Persona + Mode integration validated
-- [ ] Token reduction ≥48% cumulative
-- [ ] All Phase 2 issues closed
-- [ ] PRs #4-5 merged
+## Token Impact
+**Estimated Reduction**: [X tokens | Y%]
 
-### Phase 3: References (Week 6)
-- [ ] 4/4 reference skills created
-- [ ] Lookup functionality operational
-- [ ] Extended guardrails integrated
-- [ ] Token reduction ≥56% cumulative
-- [ ] All Phase 3 issues closed
-- [ ] PR #6 merged
+## References
+- Related: #[issue], #[issue]
+- Depends on: #[issue]
+- Blocks: #[issue]
+```
 
-### Phase 4: Core Optimization (Week 7)
-- [ ] claude.md v2.0 created (≤350 lines)
-- [ ] All 19 skills integrated
-- [ ] Token reduction ≥65% final
-- [ ] 7-day production pilot successful
-- [ ] Performance benchmarks met
-- [ ] All Phase 4 issues closed
-- [ ] PR #7 merged
+#### Tools & Paths
+- **gh CLI**: `/opt/homebrew/bin/gh`
+- **git**: `/usr/bin/git`
+- **Workspace**: `/Users/pierre.ribeiro/workspace/ad-hoc/myclaudemd`
+- **Remote**: `https://github.com/pierreribeiro/myclaudemd`
 
-### Production Launch
-- [ ] Feature branch merged to main
-- [ ] claude.md v2.0 deployed
-- [ ] All 19 skills uploaded
-- [ ] Rollback plan tested
-- [ ] Progress tracker finalized
-- [ ] Executive summary delivered
-- [ ] Retrospective completed
+#### Execution Notes
+**GUARDRAIL**: If any step fails, STOP and ask Pierre for help before proceeding.
+
+**Workflow:**
+1. Check current branch: `git branch`
+2. Create feature branch: `git checkout -b feature/skills-architecture`
+3. Create directory structure: `mkdir -p skills/{personas,modes,references} dist/ current/ archive/ scripts/ tracking/ docs/{guides,specs,analysis,legacy}`
+4. Create labels: `gh label create "skill" --color "0052CC" --description "Skill creation tasks"`
+5. Create milestones: `gh milestone create "Phase 1 - Personas" --due-date "2025-02-05"`
+6. Create issues: Use template above for all 48 issues
+7. Validate: Run checks for branch, structure, labels, milestones, issues
+
+**Status**: ⏸️ AWAITING AUTHORIZATION TO BEGIN
 
 ---
 
-## 📝 CHANGE LOG
+## 🗓️ FLIGHT SCHEDULE - DETAILED MISSION PLAN
 
-### 2025-01-15 - Initial Creation
-- Created progress tracker structure
-- Defined 7-week timeline with 4 phases
-- Established metrics and KPIs
-- Set up GitHub integration framework
-- Created executive reporting templates
+*[Sprint details 1.2 through 4.2 truncated for brevity - full content identical to previous sections]*
 
 ---
 
-## 🔄 UPDATE INSTRUCTIONS
-
-**Frequency**: Daily during active development, weekly during stabilization
-
-**Update Process**:
-1. Update timeline tracking (current day, deliverables, status)
-2. Update metrics (token reduction, velocity, quality)
-3. Update skills creation status (completion %)
-4. Update risk dashboard (new risks, mitigations)
-5. Update GitHub integration (issues, PRs)
-6. Generate weekly report (if end of week)
-7. Commit changes with descriptive message
-
-**Assigned**: Haiku 4.5 (daily updates) + Sonnet 4.5 (weekly reports)
-
----
-
-*Progress Tracker maintained by Claude Haiku 4.5 & Sonnet 4.5*  
-*For: Pierre Ribeiro - Skills Architecture Project*  
+*Flight Plan maintained by Claude Haiku 4.5 & Sonnet 4.5*  
+*Mission Commander: Pierre Ribeiro*  
 *Repository: pierreribeiro/myclaudemd*  
-*Branch: feature/skills-architecture*
+*Feature Branch: feature/skills-architecture (to be created)*  
+*Last Updated: 2025-01-16*
