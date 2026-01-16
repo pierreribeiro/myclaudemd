@@ -1,6 +1,6 @@
 # Product Requirements Document (PRD)
 
-# Skills Architecture for Claude Desktop - v1.0
+# Skills Architecture for Claude Desktop - v1.1
 
 **Project**: Transformation claude.md → Modular Skills Architecture  
 **Stakeholder**: Pierre Ribeiro  
