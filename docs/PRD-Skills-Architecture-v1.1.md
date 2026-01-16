@@ -144,7 +144,7 @@ Pierre maintains a comprehensive personal preferences file (claude.md v1.8.0) th
 
 1. `emergency-engineer.skill` - 🔥 Emergency/Production mode
 2. `debug-investigator.skill` - 🔍 Investigation/Troubleshooting
-3. `database-expert.skill` - 🗄️ DBA/DBRE ✅ **POC VALIDATED**
+3. `database-expert.skill` - 🗄️ DBA/DBRE ✅ **POC VALIDATED** **Skill file is temporarily at this path docs/database-expert.skill**
 4. `learning-mentor.skill` - 📚 Teaching/Educational
 5. `architect.skill` - 🏗️ System/Infrastructure design
 6. `code-reviewer.skill` - 👁️ Code analysis/Best practices
@@ -698,10 +698,10 @@ claude.md v2.0 MUST:
 - Create persona skill template
 - Create operational mode template
 - Setup GitHub branch `feature/skills-architecture`
-- Recreate repository structure as described at docs/EXECUTION-GUIDE-Restructure-Repository.md (Haiku)
+- Recreate repository structure as described at docs/EXECUTION-GUIDE-Restructure-Repository.md
 - Create GitHub labels and milestones
 - Create all GitHub issues, one for each task with all needed information necessary to execute the task (Sonnet)
-- Issues must contain simple, direct, and clear information, oriented towards execution. The language must be adapted for understanding Haiku 4.5 
+- Issues must contain simple, direct, and clear information, oriented towards execution. 
 
 **Sprint 1.2 - Emergency + Debug Personas** (Days 3-7)
 
@@ -938,7 +938,7 @@ claude.md v2.0 MUST:
 | **Testing/validation**         | Low-Med    | Haiku 4.5                 | Predefined test cases           |
 | **Integration testing**        | High       | Sonnet 4.5                | System-level validation         |
 | **Core architecture**          | High       | Sonnet 4.5                | Critical file, complex logic    |
-| **Progress tracking**          | Low        | Haiku 4.5                 | Update tracking documents       |
+| **Progress tracking**          | Low        | Haiku 4.5 or Sonnet 4.5   | Update tracking documents       |
 
 ### GitHub Issues Template
 
