@@ -313,6 +313,10 @@ Seções que PERMANECEM no core:
 - GitHub repo: `myclaude`
 - Skills via Settings > Capabilities
 
+**Desenvolvimento**:
+- **Branch**: `feature/skills-architecture` (nova branch dedicada para este projeto)
+- **Estrutura de Diretórios**: Ver [PROPOSTA-ESTRUTURA-REPO-myclaudemd.md](./PROPOSTA-ESTRUTURA-REPO-myclaudemd.md)
+
 ---
 
 ## 📚 REFERÊNCIAS DISPONÍVEIS
@@ -341,6 +345,13 @@ Seções que PERMANECEM no core:
 4. **Anthropic Skills Documentation**
    - Using Skills: https://support.claude.com/en/articles/12512180
    - Creating Skills: https://support.claude.com/en/articles/12512198
+
+### Estrutura do Repositório
+
+5. **PROPOSTA-ESTRUTURA-REPO-myclaudemd.md**
+   - Nova estrutura de diretórios proposta
+   - Organização de skills, docs, archive
+   - Plano de migração
 
 ---
 
@@ -441,6 +452,8 @@ Lista de tarefas específicas para Pierre executar.
 4. Mantenha **compatibilidade** com o sistema atual (não breaking changes)
 
 5. Priorize **redução de tokens** mantendo 100% das funcionalidades
+
+6. **O projeto será desenvolvido em uma branch dedicada** (`feature/skills-architecture`) para não impactar a versão atual em produção
 
 ---
 
