@@ -231,16 +231,16 @@ STEP 6: UPDATE FLIGHT PLAN
 **Issues**: 4  
 **Deliverables**: 2 skills + test reports
 
-| Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. | Start Date |
-|---------|-------------|-------|----------|--------|--------------|-------------|------------|
-| 1.2.1 | Create emergency-engineer.skill | #10 | Sonnet | 🔄 | 1.1.1 | 3h | 2025-01-17 |
-| 1.2.2 | Create debug-investigator.skill | #11 | Sonnet | ⏸️ | 1.1.1 | 3h | - |
+| Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. | Start Date | End Date | Actual Effort |
+|---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
+| 1.2.1 | Create emergency-engineer.skill | #10 | Sonnet | ✅ | 1.1.1 | 3h | 2025-01-17 | 2025-01-17 | 1.5h |
+| 1.2.2 | Create debug-investigator.skill | #11 | Sonnet | 🔄 | 1.1.1 | 3h | 2025-01-17 | - | - |
 | 1.2.3 | Test emergency triggers | #12 | Haiku | ⏸️ | 1.2.1 | 1h | - |
 | 1.2.4 | Test debug triggers | #13 | Haiku | ⏸️ | 1.2.2 | 1h | - |
 | 1.2.5 | PR #1 - Personas Batch 1 | #14 | Sonnet | ⏸️ | 1.2.1-1.2.4 | 1h | - |
 
 **Acceptance Criteria - Sprint 1.2**:
-- [ ] emergency-engineer.skill created at `skills/personas/emergency-engineer/SKILL.md`
+- [x] emergency-engineer.skill created at `skills/personas/emergency-engineer/SKILL.md`
 - [ ] debug-investigator.skill created at `skills/personas/debug-investigator/SKILL.md`
 - [ ] Both skills packaged as .skill files in `dist/`
 - [ ] Trigger accuracy ≥90% validated
