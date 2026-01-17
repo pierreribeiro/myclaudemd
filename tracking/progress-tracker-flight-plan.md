@@ -234,20 +234,20 @@ STEP 6: UPDATE FLIGHT PLAN
 | Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. | Start Date | End Date | Actual Effort |
 |---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
 | 1.2.1 | Create emergency-engineer.skill | #10 | Sonnet | ✅ | 1.1.1 | 3h | 2025-01-17 | 2025-01-17 | 1.5h |
-| 1.2.2 | Create debug-investigator.skill | #11 | Sonnet | 🔄 | 1.1.1 | 3h | 2025-01-17 | - | - |
+| 1.2.2 | Create debug-investigator.skill | #11 | Sonnet | ✅ | 1.1.1 | 3h | 2025-01-17 | 2025-01-17 | 1.5h |
 | 1.2.3 | Test emergency triggers | #12 | Haiku | ⏸️ | 1.2.1 | 1h | - |
 | 1.2.4 | Test debug triggers | #13 | Haiku | ⏸️ | 1.2.2 | 1h | - |
 | 1.2.5 | PR #1 - Personas Batch 1 | #14 | Sonnet | ⏸️ | 1.2.1-1.2.4 | 1h | - |
 
 **Acceptance Criteria - Sprint 1.2**:
 - [x] emergency-engineer.skill created at `skills/personas/emergency-engineer/SKILL.md`
-- [ ] debug-investigator.skill created at `skills/personas/debug-investigator/SKILL.md`
-- [ ] Both skills packaged as .skill files in `dist/`
+- [x] debug-investigator.skill created at `skills/personas/debug-investigator/SKILL.md`
+- [x] Both skills packaged as .skill files in `dist/`
 - [ ] Trigger accuracy ≥90% validated
 - [ ] Test reports in `docs/testing/`
 - [ ] PR #1 submitted with 2 skills
 
-**Sprint 1.2 Completion**: 0% | **Phase 1 Progress**: 2/10 skills
+**Sprint 1.2 Completion**: 40% (2/5 tasks) | **Phase 1 Progress**: 2/10 skills (20%)
 
 ---
 
