@@ -186,3 +186,10 @@ ENV/
 !LICENSE
 !CHANGELOG.md
 !CONTRIBUTING.md
+# === Repository Restructure - Added 2025-01-16 ===
+dist/*.skill
+*.backup
+*-backup
+skills/**/*.tmp
+skills/**/*.draft
+.skill-build/
