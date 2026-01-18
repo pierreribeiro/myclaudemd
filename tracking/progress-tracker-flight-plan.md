@@ -235,19 +235,26 @@ STEP 6: UPDATE FLIGHT PLAN
 |---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
 | 1.2.1 | Create emergency-engineer.skill | #10 | Sonnet | ✅ | 1.1.1 | 3h | 2025-01-17 | 2025-01-17 | 1.5h |
 | 1.2.2 | Create debug-investigator.skill | #11 | Sonnet | ✅ | 1.1.1 | 3h | 2025-01-17 | 2025-01-17 | 1.5h |
-| 1.2.3 | Test emergency triggers | #12 | Haiku | ⏸️ | 1.2.1 | 1h | - |
-| 1.2.4 | Test debug triggers | #13 | Haiku | ⏸️ | 1.2.2 | 1h | - |
+| 1.2.3 | Test emergency triggers | #12 | Haiku | ✅ | 1.2.1 | 1h | 2025-01-17 | 2025-01-17 | 1h |
+| 1.2.4 | Test debug triggers | #13 | Haiku | ✅ | 1.2.2 | 1h | 2025-01-17 | 2025-01-17 | 1h |
 | 1.2.5 | PR #1 - Personas Batch 1 | #14 | Sonnet | ⏸️ | 1.2.1-1.2.4 | 1h | - |
 
 **Acceptance Criteria - Sprint 1.2**:
 - [x] emergency-engineer.skill created at `skills/personas/emergency-engineer/SKILL.md`
 - [x] debug-investigator.skill created at `skills/personas/debug-investigator/SKILL.md`
 - [x] Both skills packaged as .skill files in `dist/`
-- [ ] Trigger accuracy ≥90% validated
-- [ ] Test reports in `docs/testing/`
+- [x] Trigger accuracy ≥90% validated (100% emergency, 100% debug)
+- [x] Test reports in `docs/testing/emergency-engineer-test-report.md` and `docs/testing/debug-investigator-test-report.md`
 - [ ] PR #1 submitted with 2 skills
 
-**Sprint 1.2 Completion**: 40% (2/5 tasks) | **Phase 1 Progress**: 2/10 skills (20%)
+**Test Results Summary** (2025-01-17):
+- ✅ **emergency-engineer.skill**: 20/20 tests PASS (100% accuracy, zero false positives)
+- ✅ **debug-investigator.skill**: 20/20 tests PASS (100% accuracy, zero false positives)
+- ✅ Both exceed ≥90% acceptance criterion
+- ✅ Behavioral alignment with v1.8.0 confirmed
+- ✅ TAG commands functional (`@Emergency mode@`, `@Debug this@`)
+
+**Sprint 1.2 Completion**: 80% (4/5 tasks) | **Phase 1 Progress**: 2/10 skills (20%)
 
 ---
 
