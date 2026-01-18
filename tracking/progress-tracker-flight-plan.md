@@ -326,21 +326,21 @@ STEP 6: UPDATE FLIGHT PLAN
 
 | Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. | Start Date | End Date | Actual Effort |
 |---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
-| 1.4.1 | Create code-reviewer.skill | #19 | Sonnet | 🔄 | 1.3.4 | 3h | 2025-01-18 | TBD | TBD |
+| 1.4.1 | Create code-reviewer.skill | #19 | Sonnet | ✅ | 1.3.4 | 3h | 2025-01-18 | 2025-01-18 | 1.5h |
 | 1.4.2 | Create product-manager.skill | #20 | Haiku+Sonnet | ⏸️ | 1.3.4 | 2h+1h | TBD | TBD | TBD |
 | 1.4.3 | Test code-reviewer triggers | #21 | Haiku | ⏸️ | 1.4.1 | 1h | TBD | TBD | TBD |
 | 1.4.4 | Test PM triggers | #22 | Haiku | ⏸️ | 1.4.2 | 1h | TBD | TBD | TBD |
 | 1.4.5 | PR #3 - Personas Batch 3 | #23 | Sonnet | ⏸️ | 1.4.1-1.4.4 | 1h | TBD | TBD | TBD |
 
 **Acceptance Criteria - Sprint 1.4**:
-- [ ] code-reviewer.skill created at `skills/personas/code-reviewer/SKILL.md`
+- [x] code-reviewer.skill created at `skills/personas/code-reviewer/SKILL.md`
 - [ ] product-manager.skill created at `skills/personas/product-manager/SKILL.md`
 - [ ] Both skills packaged as .skill files in `dist/`
 - [ ] Trigger accuracy ≥90% validated
 - [ ] Test reports in `docs/testing/`
 - [ ] PR #3 submitted with 6 cumulative skills (code-reviewer + product-manager)
 
-**Sprint 1.4 Completion**: 0% (STEP 0 complete - all issues detailed) | **Phase 1 Progress**: 4/10 skills (40% - ready for 60%)
+**Sprint 1.4 Completion**: 20% (1/5 tasks complete) | **Phase 1 Progress**: 5/10 skills (50% - ready for 60%)
 
 ---
 
