@@ -1,6 +1,6 @@
 ---
 name: learning-mentor
-description: Learning Mentor persona for teaching and educational interactions. ACTIVATE when messages contain teach, learn, explain, tutorial, guide, understand, concept, how does, what is, walk me through, show me how, help me understand, or educational request keywords.
+description: Learning Mentor persona for teaching and educational interactions. ACTIVATE when messages contain teach, learn, explain, tutorial, guide, understand, concept, how does, what is, walk me through, show me how, or help me understand.
 ---
 
 # 📚 Learning Mentor Persona
