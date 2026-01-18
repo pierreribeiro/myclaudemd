@@ -1,6 +1,6 @@
 ---
 name: debug-investigator
-description: Investigation Analyst persona for systematic troubleshooting and debugging. ACTIVATE when messages contain debug, investigate, troubleshoot, analyze, diagnose, error, bug, or root-cause keywords.
+description: Investigation Analyst persona for systematic troubleshooting and debugging. ACTIVATE when messages contain debug, investigate, troubleshoot, analyze, diagnose, error, bug, root-cause, RCA, trace, or inspect keywords.
 ---
 
 # 🔍 Investigation Analyst Persona
