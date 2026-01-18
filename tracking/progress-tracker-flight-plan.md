@@ -2,11 +2,12 @@
 **Project**: Transform claude.md v1.8.0 → Modular Skills Architecture  
 **Mission Commander**: Pierre Ribeiro  
 **Flight Duration**: 7 weeks (49 days)  
-**Mission Status**: ✅ SPRINT 1.3 COMPLETE - Ready for Sprint 1.4
-**Last Updated**: 2025-01-17
+**Mission Status**: 🔄 SPRINT 1.4 ONGOING - Code & Product Personas
+**Last Updated**: 2025-01-18
 **Sprint 1.1 Completed**: 2025-01-16
 **Sprint 1.2 Completed**: 2025-01-17
 **Sprint 1.3 Completed**: 2025-01-17
+**Sprint 1.4 Started**: 2025-01-18
 
 ---
 
@@ -316,19 +317,20 @@ STEP 6: UPDATE FLIGHT PLAN
 
 ---
 
-#### SPRINT 1.4 - Code & Product Personas (Days 11-14)
+#### SPRINT 1.4 - Code & Product Personas (Days 11-14) 🔄
 
-**Status**: ⏸️ PENDING (blocked by Sprint 1.3)  
-**Issues**: 5  
-**Deliverables**: 2 skills + test reports + PR #2
+**Status**: 🔄 ONGOING
+**Issues**: 5 (#19-23)
+**Deliverables**: 2 skills + test reports + PR #63
+**Start Date**: 2025-01-18
 
-| Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. |
-|---------|-------------|-------|----------|--------|--------------|-------------|
-| 1.4.1 | Create code-reviewer.skill | #TBD | Sonnet | ⏸️ | 1.3.4 | 3h |
-| 1.4.2 | Create product-manager.skill | #TBD | Sonnet | ⏸️ | 1.3.4 | 2h+1h |
-| 1.4.3 | Test code-reviewer triggers | #TBD | Haiku | ⏸️ | 1.4.1 | 1h |
-| 1.4.4 | Test PM triggers | #TBD | Haiku | ⏸️ | 1.4.2 | 1h |
-| 1.4.5 | PR #2 - Personas Batch 2 | #TBD | Sonnet | ⏸️ | 1.4.1-1.4.4 | 1h |
+| Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. | Start Date | End Date | Actual Effort |
+|---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
+| 1.4.1 | Create code-reviewer.skill | #19 | Sonnet | ⏸️ | 1.3.4 | 3h | TBD | TBD | TBD |
+| 1.4.2 | Create product-manager.skill | #20 | Haiku+Sonnet | ⏸️ | 1.3.4 | 2h+1h | TBD | TBD | TBD |
+| 1.4.3 | Test code-reviewer triggers | #21 | Haiku | ⏸️ | 1.4.1 | 1h | TBD | TBD | TBD |
+| 1.4.4 | Test PM triggers | #22 | Haiku | ⏸️ | 1.4.2 | 1h | TBD | TBD | TBD |
+| 1.4.5 | PR #3 - Personas Batch 3 | #23 | Sonnet | ⏸️ | 1.4.1-1.4.4 | 1h | TBD | TBD | TBD |
 
 **Acceptance Criteria - Sprint 1.4**:
 - [ ] code-reviewer.skill created at `skills/personas/code-reviewer/SKILL.md`
@@ -336,9 +338,9 @@ STEP 6: UPDATE FLIGHT PLAN
 - [ ] Both skills packaged as .skill files in `dist/`
 - [ ] Trigger accuracy ≥90% validated
 - [ ] Test reports in `docs/testing/`
-- [ ] PR #2 submitted with 4 cumulative skills
+- [ ] PR #3 submitted with 6 cumulative skills (code-reviewer + product-manager)
 
-**Sprint 1.4 Completion**: 0% | **Phase 1 Progress**: 6/10 skills
+**Sprint 1.4 Completion**: 0% (STEP 0 complete - all issues detailed) | **Phase 1 Progress**: 4/10 skills (40% - ready for 60%)
 
 ---
 
