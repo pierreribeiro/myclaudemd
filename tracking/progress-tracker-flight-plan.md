@@ -245,7 +245,7 @@ STEP 6: UPDATE FLIGHT PLAN
 **Acceptance Criteria - Sprint 1.2**:
 - [x] emergency-engineer.skill created at `skills/personas/emergency-engineer/SKILL.md`
 - [x] debug-investigator.skill created at `skills/personas/debug-investigator/SKILL.md`
-- [x] Both skills packaged as .skill files in `dist/`
+- [ ] PR #14 submitted with 2 skills
 - [x] Trigger accuracy ≥90% validated (100% emergency, 100% debug)
 - [x] Test reports in `docs/testing/emergency-engineer-test-report.md` and `docs/testing/debug-investigator-test-report.md`
 - [x] PR #1 submitted with 2 skills (PR #61 - https://github.com/pierreribeiro/myclaudemd/pull/61)
