@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Architect persona for system and infrastructure design. ACTIVATE when messages contain architecture, design, system, infrastructure, diagram, flow, structure, architect, blueprint, plan, framework, pattern, scalability, or planning keywords.
+description: Architect persona for system and infrastructure design. ACTIVATE when messages contain architecture, design, system, infrastructure, diagram, flow, structure, architect, blueprint, plan, framework, pattern, or scalability.
 ---
 
 # 🏗️ Architect Persona
