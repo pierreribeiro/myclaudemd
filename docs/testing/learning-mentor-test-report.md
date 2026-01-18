@@ -12,7 +12,7 @@
 
 The `learning-mentor.skill` successfully activates on all teaching and educational keywords and commands. 
 
-**Overall Accuracy**: **100%** (20/20 test cases passed)  
+**Overall Accuracy**: **100%** (23/23 test cases passed)  
 **Status**: ✅ **PASS** - Exceeds acceptance criteria (≥90%)
 
 ---
