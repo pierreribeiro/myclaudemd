@@ -327,7 +327,7 @@ STEP 6: UPDATE FLIGHT PLAN
 | Task ID | Description | Issue | Assigned | Status | Dependencies | Effort Est. | Start Date | End Date | Actual Effort |
 |---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
 | 1.4.1 | Create code-reviewer.skill | #19 | Sonnet | ✅ | 1.3.4 | 3h | 2025-01-18 | 2025-01-18 | 1.5h |
-| 1.4.2 | Create product-manager.skill | #20 | Haiku+Sonnet | ⏸️ | 1.3.4 | 2h+1h | TBD | TBD | TBD |
+| 1.4.2 | Create product-manager.skill | #20 | Sonnet | 🔄 | 1.3.4 | 2h | 2025-01-18 | TBD | TBD |
 | 1.4.3 | Test code-reviewer triggers | #21 | Haiku | ⏸️ | 1.4.1 | 1h | TBD | TBD | TBD |
 | 1.4.4 | Test PM triggers | #22 | Haiku | ⏸️ | 1.4.2 | 1h | TBD | TBD | TBD |
 | 1.4.5 | PR #3 - Personas Batch 3 | #23 | Sonnet | ⏸️ | 1.4.1-1.4.4 | 1h | TBD | TBD | TBD |
