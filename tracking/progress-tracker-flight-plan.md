@@ -328,19 +328,20 @@ STEP 6: UPDATE FLIGHT PLAN
 |---------|-------------|-------|----------|--------|--------------|-------------|------------|----------|---------------|
 | 1.4.1 | Create code-reviewer.skill | #19 | Sonnet | ✅ | 1.3.4 | 3h | 2025-01-18 | 2025-01-18 | 1.5h |
 | 1.4.2 | Create product-manager.skill | #20 | Sonnet | ✅ | 1.3.4 | 2h | 2025-01-18 | 2025-01-18 | 1.5h |
-| 1.4.3 | Test code-reviewer triggers | #21 | Haiku | ⏸️ | 1.4.1 | 1h | TBD | TBD | TBD |
-| 1.4.4 | Test PM triggers | #22 | Haiku | ⏸️ | 1.4.2 | 1h | TBD | TBD | TBD |
-| 1.4.5 | PR #3 - Personas Batch 3 | #23 | Sonnet | ⏸️ | 1.4.1-1.4.4 | 1h | TBD | TBD | TBD |
+| 1.4.3 | Test code-reviewer triggers | #21 | Haiku | ✅ | 1.4.1 | 1h | 2025-01-18 | 2025-01-18 | 1h |
+| 1.4.4 | Test PM triggers | #22 | Haiku | ✅ | 1.4.2 | 1h | 2025-01-18 | 2025-01-18 | 1h |
+| 1.4.5 | PR #3 - Personas Batch 3 | #23 | Sonnet | 🔄 | 1.4.1-1.4.4 | 1h | 2025-01-18 | TBD | TBD |
 
 **Acceptance Criteria - Sprint 1.4**:
 - [x] code-reviewer.skill created at `skills/personas/code-reviewer/SKILL.md`
 - [x] product-manager.skill created at `skills/personas/product-manager/SKILL.md`
 - [ ] Both skills packaged as .skill files in `dist/`
-- [ ] Trigger accuracy ≥90% validated
-- [ ] Test reports in `docs/testing/`
+- [x] Trigger accuracy ≥90% validated (100% achieved - 23/23 tests each)
+- [x] Test reports in `docs/testing/` (code-reviewer + product-manager)
 - [ ] PR #3 submitted with 6 cumulative skills (code-reviewer + product-manager)
 
-**Sprint 1.4 Completion**: 40% (2/5 tasks complete) | **Phase 1 Progress**: 6/10 skills (60%)
+**Sprint 1.4 Completion**: 80% (4/5 tasks complete) | **Phase 1 Progress**: 6/10 skills (60%)
+**Testing Results**: 132/132 cumulative tests PASS (100% accuracy across all sprints)
 
 ---
 
