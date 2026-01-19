@@ -2,6 +2,7 @@
 # Package skill to .skill file (ZIP)
 # Usage: ./scripts/package-skill.sh <skill-path>
 set -e
+command -v zip >/dev/null || { echo "❌ zip not found. Please install zip."; exit 1; }
 [ $# -ne 1 ] && echo "Usage: $0 <skill-path>" && exit 1
 SKILL_PATH="$1"
 SKILL_NAME=$(basename "$SKILL_PATH")
