@@ -288,21 +288,21 @@ REPEAT STEPS 2-6 FOR TASK 1.4.4 (Issue #22)
 ## 📁 FILE LOCATIONS
 
 ### Skills to Test
-- **code-reviewer**: `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/skills/personas/code-reviewer/SKILL.md`
-- **product-manager**: `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/skills/personas/product-manager/SKILL.md`
+- **code-reviewer**: `skills/personas/code-reviewer/SKILL.md`
+- **product-manager**: `skills/personas/product-manager/SKILL.md`
 
 ### Test Reports (Create These)
-- **code-reviewer report**: `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/docs/testing/code-reviewer-test-report.md`
-- **product-manager report**: `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/docs/testing/product-manager-test-report.md`
+- **code-reviewer report**: `docs/testing/code-reviewer-test-report.md`
+- **product-manager report**: `docs/testing/product-manager-test-report.md`
 
 ### Reference (Previous Test Reports)
-- `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/docs/testing/emergency-engineer-test-report.md`
-- `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/docs/testing/debug-investigator-test-report.md`
-- `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/docs/testing/learning-mentor-test-report.md`
-- `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/docs/testing/architect-test-report.md`
+- `docs/testing/emergency-engineer-test-report.md`
+- `docs/testing/debug-investigator-test-report.md`
+- `docs/testing/learning-mentor-test-report.md`
+- `docs/testing/architect-test-report.md`
 
 ### Flight Plan
-- `/Users/pierre.ribeiro/.claude-worktrees/myclaudemd/lucid-mclaren/tracking/progress-tracker-flight-plan.md`
+- `tracking/progress-tracker-flight-plan.md`
 
 ---
 
